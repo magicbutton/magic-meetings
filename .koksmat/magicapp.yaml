@@ -1,0 +1,84 @@
+name: magic-meetings
+type: magicservice
+organisation: magicbutton
+magicappversion: v0.0.1
+description: Meeting Management
+
+models:
+  itemMethods: &itemMethods
+
+    - name: read
+      description: Read a single item
+      parameters:
+        - name: id
+          description: The id of the item
+          type: string
+          required: true
+      returns:
+        type: object
+      
+    - name: create
+      description: Create a new item
+      parameters:
+        - name: item
+          description: The item to create
+          type: object
+          required: true
+      returns:
+        type: object          
+    - name: update
+      description: Update an existing item
+      parameters:
+        - name: item
+          description: The item to update
+          type: object
+          required: true
+      returns:
+        type: object          
+         
+    - name: delete
+      description: Delete an existing item
+      parameters:
+        - name: id
+          description: The id of the item
+          type: string
+          required: true
+      returns:
+        type: void          
+    - name: search
+      description: Search for items
+      parameters:
+        - name: query
+          description: The search query
+          type: string
+          required: true
+          
+      returns:
+        type: page          
+
+services:
+  - name: user
+    description: Manage users
+    entity: 
+      type: record
+      model: user
+      objectname: User
+    methods: *itemMethods
+   
+  # - name: group
+  #   description: Manage Groups
+  #   entity: 
+  #     type: record
+  #     model: group
+  #     objectname: Group
+
+  #   methods: *itemMethods
+
+  # - name: groupsegment
+  #   description: Manage Group Segments
+  #   entity: 
+  #     type: record
+  #     model: groupsegment
+  #     objectname: Groupsegment
+
+  #   methods: *itemMethods

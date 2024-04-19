@@ -1,0 +1,13 @@
+{
+  "version": {
+    "minor": 0,
+    "build": 1,
+    "patch": 1,
+    "major": 0
+  },
+  "appname": "magic-meetings",
+  "dnsprod": "meetings.intra.nexigroup.com",
+  "dnstest": "test.meetings.intra.nexigroup.com",
+  "imagename": "ghcr.io/magicbuttons/magic-meetings",
+  "port": 4338
+}
