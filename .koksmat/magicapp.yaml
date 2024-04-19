@@ -4,6 +4,323 @@ organisation: magicbutton
 magicappversion: v0.0.1
 description: Meeting Management
 
+roles:
+  - name: admin
+    description: Administrator
+  - name: organizer
+    description: Organizer
+  - name: participant
+    description: Participant
+  - name: guest
+    description: Guest
+  - name: viewer
+    description: Viewer
+  - name: presenter
+    description: Presenter
+  - name: host
+    description: Host
+
+baseattributes:
+  record: &recordAttributes
+    - name: id
+      type: string
+      required: true
+    - name: name
+      type: string
+      required: true
+    - name: description
+      type: string
+      required: false
+    - name: created
+      type: datetime
+      required: true
+    - name: updated
+      type: datetime
+      required: true
+
+processes:
+  - name: prepare
+    description: Prepare Meeting
+    result: meeting
+  - name: cancel
+    description: Cancel Meeting
+    result: meeting
+  - name: reschedule
+    description: Reschedule Meeting
+    result: meeting
+  - name: individualactions
+    description: Individual Actions
+    sequence:
+      - name: accept
+        description: Accept Invitation
+        result: meeting
+      - name: decline
+        description: Decline Invitation
+        result: meeting
+      - name: propose
+        description: Propose New Time
+        result: meeting
+      - name: confirm
+        description: Confirm Meeting
+        result: meeting
+      - name: cancel
+        description: Cancel Meeting
+        result: meeting
+      - name: reschedule
+        description: Reschedule Meeting
+        result: meeting
+    
+      
+  
+
+entities:
+  user: &user
+    name: user
+    description: User
+    baselineattributes: *recordAttributes
+    additionalattributes:       
+      - name: email
+        type: string
+        required: true   
+
+  meetingroom: &meetingroom
+    name: meetingroom
+    description: Meeting Room
+    parent: building
+    baselineattributes: *recordAttributes
+    additionalattributes:       
+      - name: email
+        type: string
+        required: true
+      
+      - name: capacity
+        type: integer
+        required: true
+
+      - name: features
+        type: array
+        required: false
+
+      - name: floor
+        type: reference
+        required: false
+  communicationchannel: &communicationchannel
+    name: communicationchannel
+    description: Communication Channel
+    baselineattributes: *recordAttributes
+    additionalattributes:       
+      - name: type
+        type: string
+        required: true
+      - name: address
+        type: string
+        required: true
+
+  messagetemplates: &messagetemplates
+    name: messagetemplates
+    description: Message Templates
+    baselineattributes: *recordAttributes
+    additionalattributes:       
+      - name: type
+        type: string
+        required: true
+      - name: content
+        type: string
+        required: true
+
+  floor: &floor
+    name: floor
+    description: Floor
+    baselineattributes: *recordAttributes
+    parent: building
+      
+  building: &building 
+    name: building
+    description: Building
+    parent: site
+    baselineattributes: *recordAttributes
+    additionalattributes:       
+      - name: address
+        type: string
+        required: true
+  site: &site
+    name: site
+    description: Site
+    parent: country
+    baselineattributes: *recordAttributes
+    additionalattributes:       
+      - name: address
+        type: string
+        required: true 
+
+  country: &country
+    name: country
+    description: Country
+    baselineattributes: *recordAttributes
+    additionalattributes:       
+      - name: code
+        type: string
+        required: true
+  
+  meeting: &meeting 
+    name: meeting
+    description: Meeting
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: start
+        type: datetime
+        required: true
+      - name: end
+        type: datetime
+        required: true
+      - name: location
+        type: reference
+        required: true
+      - name: organizer
+        type: reference
+        required: true
+      - name: participants
+        type: array
+        required: false
+      - name: guests
+        type: array
+        required: false
+      - name: viewers 
+        type: array
+        required: false
+      - name: presenters
+        type: array
+        required: false
+      - name: hosts
+        type: array
+        required: false
+      - name: status
+        type: string
+        required: true
+      - name: serviceorders
+        type: array
+        required: false
+      - name: exchangereference
+        type: string
+        required: false
+      - name: exchangestatus
+        type: string
+        required: false
+      - name: teamsreference
+        type: string
+        required: false
+      - name: teamsstatus
+        type: string
+        required: false
+  servicecategory: &servicecategory
+    name: servicecategory
+    description: Service Category
+    baselineattributes: *recordAttributes
+  service: &service
+    name: service
+    description: Service
+    baselineattributes: *recordAttributes
+    parent: servicecategory
+    additionalattributes:
+      - name: price
+        type: number
+        required: true
+      - name: currency
+        type: string
+        required: true
+  servicecatalogue: &servicecatalogue
+    name: servicecatalogue
+    description: Service Catalogue
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: services
+        type: array
+        required: false
+  vendor: &vendor
+    name: vendor
+    description: Vendor
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: services
+        type: array
+        required: false
+  serviceorder: &serviceorder
+    name: serviceorder
+    description: Service Order
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: deliverydate
+        type: datetime
+        required: false
+      - name: deliverto
+        type: reference
+        required: false
+      - name: services
+        type: array
+        required: false
+      - name: status
+        type: string
+        required: true
+      - name: payment
+        type: reference
+        referenceto: account
+        required: false
+  task: &task
+    name: task
+    description: Task
+    baselineattributes: *recordAttributes
+    parent: productionorder
+    additionalattributes:
+      - name: start
+        type: datetime
+        required: true
+      - name: end
+        type: datetime
+        required: true
+      - name: location
+        type: reference
+        required: true
+    
+  productionorder: &productionorder
+    name: productionorder
+    description: Production Order
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: deliverydate
+        type: datetime
+        required: false
+      - name: deliverto
+        type: reference
+        required: false
+      - name: services
+        type: array
+        required: false
+      - name: status
+        type: string
+        required: true
+      - name: payment
+        type: reference
+        referenceto: account
+        required: false
+  account: &account
+    name: account
+    description: Account
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: balance
+        type: number
+        required: true
+      - name: currency
+        type: string
+        required: true
+      - name: transactions
+        type: array
+        required: false
+      - name: status
+        type: string
+        required: true
+
+
 models:
   itemMethods: &itemMethods
 
@@ -58,13 +375,155 @@ models:
 
 services:
   - name: user
-    description: Manage users
+
     entity: 
       type: record
       model: user
       objectname: User
+      entity: *user
     methods: *itemMethods
-   
+  
+  - name: meeting
+    entity: 
+      type: record
+      model: meeting
+      objectname: Meeting
+      entity: *meeting
+    methods: *itemMethods
+  
+  - name: serviceorder
+    entity: 
+      type: record
+      model: meeting
+      objectname: Meeting
+      entity: *serviceorder
+    methods: *itemMethods
+  
+  - name: service
+    entity: 
+      type: record
+      model: service
+      objectname: Service
+      entity: *service
+    methods: *itemMethods
+
+  - name: servicecatalogue
+    entity: 
+      type: record
+      model: servicecatalogue
+      objectname: Servicecatalogue
+      entity: *servicecatalogue
+    methods: *itemMethods
+
+  - name: vendor 
+    entity: 
+      type: record
+      model: vendor
+      objectname: Vendor
+      entity: *vendor
+    methods: *itemMethods
+
+  - name: servicecategory
+    entity: 
+      type: record
+      model: servicecategory
+      objectname: Servicecategory
+      entity: *servicecategory
+    methods: *itemMethods
+
+  - name: serviceorder  
+    entity: 
+      type: record
+      model: serviceorder
+      objectname: Serviceorder
+      entity: *serviceorder
+    methods: *itemMethods
+
+  - name: task  
+    entity: 
+      type: record
+      model: task
+      objectname: Task
+      entity: *task
+    methods: *itemMethods
+  
+  - name: productionorder
+    entity: 
+      type: record
+      model: productionorder
+      objectname: Productionorder
+      entity: *productionorder
+    methods: *itemMethods
+
+  - name: account
+    entity: 
+      type: record
+      model: account
+      objectname: Account
+      entity: *account
+    methods: *itemMethods
+
+  - name: building
+    entity: 
+      type: record
+      model: building
+      objectname: Building
+      entity: *building
+    methods: *itemMethods
+
+  - name: site  
+    entity: 
+      type: record
+      model: site
+      objectname: Site
+      entity: *site
+    methods: *itemMethods
+
+  - name: country
+    entity: 
+      type: record
+      model: country
+      objectname: Country
+      entity: *country
+    methods: *itemMethods
+
+  - name: floor 
+    entity: 
+      type: record
+      model: floor
+      objectname: Floor
+      entity: *floor
+    methods: *itemMethods
+
+  - name: meetingroom
+    entity: 
+      type: record
+      model: meetingroom
+      objectname: Meetingroom
+      entity: *meetingroom
+    methods: *itemMethods
+
+  - name: communicationchannel
+    entity: 
+      type: record
+      model: communicationchannel
+      objectname: Communicationchannel
+      entity: *communicationchannel
+    methods: *itemMethods
+
+  - name: messagetemplates
+    entity: 
+      type: record
+      model: messagetemplates
+      objectname: Messagetemplates
+      entity: *messagetemplates
+    methods: *itemMethods
+
+
+
+
+  
+      
   # - name: group
   #   description: Manage Groups
   #   entity: 

@@ -16,6 +16,7 @@ import { OpenInNewWindowIcon } from "@radix-ui/react-icons";
 import { VsCodeEdittoolbar } from "../components/VsCodeEdittoolbar";
 import { AppMap, LeafTree, Leaf } from "../components/appnavigator";
 import BreadcrumbNavigator from "../components/BreadcrumbNavigator";
+import { APPNAME, SERVICENAME } from "@/app/global";
 
 const loadFiles = (folderPath: string) => {
   const leafs: Leaf[] = [];
@@ -65,7 +66,7 @@ export default function Layout(props: { children: any }) {
   const appPath = path.join(cwd(), "app");
 
   const pagemap: AppMap = {
-    name: "infocast",
+    name: APPNAME,
     leafs: loadFiles(appPath),
   };
 
@@ -76,7 +77,7 @@ export default function Layout(props: { children: any }) {
         {/* <div>{folderPath}</div> */}
         <div className="flex">
           <div className="hidden lg:block lg:w-1/4">
-            <LeafTree leafs={pagemap.leafs} appName="nexi-infocast" />
+            <LeafTree leafs={pagemap.leafs} appName={SERVICENAME} />
           </div>
           <div className="lg:hidden ">
             <Sheet>
@@ -84,7 +85,7 @@ export default function Layout(props: { children: any }) {
                 <MenuIcon />
               </SheetTrigger>
               <SheetContent side="left">
-                <LeafTree leafs={pagemap.leafs} appName="nexi-infocast" />
+                <LeafTree leafs={pagemap.leafs} appName={SERVICENAME} />
               </SheetContent>
             </Sheet>
           </div>

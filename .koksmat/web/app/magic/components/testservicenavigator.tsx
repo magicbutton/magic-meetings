@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/koksmat/utils";
-import { AppMap } from "../services/nexi-infocast";
+import { AppMap } from "../services/magic-meetings";
 import { usePathname } from "next/navigation";
 
 export function TestServicesNavigator(props: {

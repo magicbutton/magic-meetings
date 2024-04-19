@@ -3,9 +3,9 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "export NODE_ENV= && next dev -p 4335",
+        "dev": "next dev -p 4338",
         "build": "next build",
-        "start": "next start -p 4335",
+        "start": "next start -p 4338",
         "lint": "next lint",
         "lint:fix": "next lint --fix"
     },

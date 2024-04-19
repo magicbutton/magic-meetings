@@ -1,0 +1,3401 @@
+{
+  "name": "magic-meetings",
+  "type": "magicservice",
+  "organisation": "magicbutton",
+  "magicappversion": "v0.0.1",
+  "description": "Meeting Management",
+  "roles": [
+    {
+      "name": "admin",
+      "description": "Administrator"
+    },
+    {
+      "name": "organizer",
+      "description": "Organizer"
+    },
+    {
+      "name": "participant",
+      "description": "Participant"
+    },
+    {
+      "name": "guest",
+      "description": "Guest"
+    },
+    {
+      "name": "viewer",
+      "description": "Viewer"
+    },
+    {
+      "name": "presenter",
+      "description": "Presenter"
+    },
+    {
+      "name": "host",
+      "description": "Host"
+    }
+  ],
+  "baseattributes": {
+    "record": [
+      {
+        "name": "id",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "created",
+        "type": "datetime",
+        "required": true
+      },
+      {
+        "name": "updated",
+        "type": "datetime",
+        "required": true
+      }
+    ]
+  },
+  "processes": [
+    {
+      "name": "prepare",
+      "description": "Prepare Meeting",
+      "result": "meeting"
+    },
+    {
+      "name": "cancel",
+      "description": "Cancel Meeting",
+      "result": "meeting"
+    },
+    {
+      "name": "reschedule",
+      "description": "Reschedule Meeting",
+      "result": "meeting"
+    },
+    {
+      "name": "individualactions",
+      "description": "Individual Actions",
+      "sequence": [
+        {
+          "name": "accept",
+          "description": "Accept Invitation",
+          "result": "meeting"
+        },
+        {
+          "name": "decline",
+          "description": "Decline Invitation",
+          "result": "meeting"
+        },
+        {
+          "name": "propose",
+          "description": "Propose New Time",
+          "result": "meeting"
+        },
+        {
+          "name": "confirm",
+          "description": "Confirm Meeting",
+          "result": "meeting"
+        },
+        {
+          "name": "cancel",
+          "description": "Cancel Meeting",
+          "result": "meeting"
+        },
+        {
+          "name": "reschedule",
+          "description": "Reschedule Meeting",
+          "result": "meeting"
+        }
+      ]
+    }
+  ],
+  "entities": {
+    "user": {
+      "name": "user",
+      "description": "User",
+      "baselineattributes": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "created",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "updated",
+          "type": "datetime",
+          "required": true
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "email",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    "meetingroom": {
+      "name": "meetingroom",
+      "description": "Meeting Room",
+      "parent": "building",
+      "baselineattributes": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "created",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "updated",
+          "type": "datetime",
+          "required": true
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "capacity",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "name": "features",
+          "type": "array",
+          "required": false
+        },
+        {
+          "name": "floor",
+          "type": "reference",
+          "required": false
+        }
+      ]
+    },
+    "communicationchannel": {
+      "name": "communicationchannel",
+      "description": "Communication Channel",
+      "baselineattributes": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "created",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "updated",
+          "type": "datetime",
+          "required": true
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "type",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "address",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    "messagetemplates": {
+      "name": "messagetemplates",
+      "description": "Message Templates",
+      "baselineattributes": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "created",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "updated",
+          "type": "datetime",
+          "required": true
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "type",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "content",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    "floor": {
+      "name": "floor",
+      "description": "Floor",
+      "baselineattributes": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "created",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "updated",
+          "type": "datetime",
+          "required": true
+        }
+      ],
+      "parent": "building"
+    },
+    "building": {
+      "name": "building",
+      "description": "Building",
+      "parent": "site",
+      "baselineattributes": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "created",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "updated",
+          "type": "datetime",
+          "required": true
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "address",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    "site": {
+      "name": "site",
+      "description": "Site",
+      "parent": "country",
+      "baselineattributes": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "created",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "updated",
+          "type": "datetime",
+          "required": true
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "address",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    "country": {
+      "name": "country",
+      "description": "Country",
+      "baselineattributes": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "created",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "updated",
+          "type": "datetime",
+          "required": true
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "code",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    "meeting": {
+      "name": "meeting",
+      "description": "Meeting",
+      "baselineattributes": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "created",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "updated",
+          "type": "datetime",
+          "required": true
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "start",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "end",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "location",
+          "type": "reference",
+          "required": true
+        },
+        {
+          "name": "organizer",
+          "type": "reference",
+          "required": true
+        },
+        {
+          "name": "participants",
+          "type": "array",
+          "required": false
+        },
+        {
+          "name": "guests",
+          "type": "array",
+          "required": false
+        },
+        {
+          "name": "viewers",
+          "type": "array",
+          "required": false
+        },
+        {
+          "name": "presenters",
+          "type": "array",
+          "required": false
+        },
+        {
+          "name": "hosts",
+          "type": "array",
+          "required": false
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "serviceorders",
+          "type": "array",
+          "required": false
+        },
+        {
+          "name": "exchangereference",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "exchangestatus",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "teamsreference",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "teamsstatus",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    "servicecategory": {
+      "name": "servicecategory",
+      "description": "Service Category",
+      "baselineattributes": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "created",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "updated",
+          "type": "datetime",
+          "required": true
+        }
+      ]
+    },
+    "service": {
+      "name": "service",
+      "description": "Service",
+      "baselineattributes": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "created",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "updated",
+          "type": "datetime",
+          "required": true
+        }
+      ],
+      "parent": "servicecategory",
+      "additionalattributes": [
+        {
+          "name": "price",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    "servicecatalogue": {
+      "name": "servicecatalogue",
+      "description": "Service Catalogue",
+      "baselineattributes": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "created",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "updated",
+          "type": "datetime",
+          "required": true
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "services",
+          "type": "array",
+          "required": false
+        }
+      ]
+    },
+    "vendor": {
+      "name": "vendor",
+      "description": "Vendor",
+      "baselineattributes": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "created",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "updated",
+          "type": "datetime",
+          "required": true
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "services",
+          "type": "array",
+          "required": false
+        }
+      ]
+    },
+    "serviceorder": {
+      "name": "serviceorder",
+      "description": "Service Order",
+      "baselineattributes": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "created",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "updated",
+          "type": "datetime",
+          "required": true
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "deliverydate",
+          "type": "datetime",
+          "required": false
+        },
+        {
+          "name": "deliverto",
+          "type": "reference",
+          "required": false
+        },
+        {
+          "name": "services",
+          "type": "array",
+          "required": false
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "payment",
+          "type": "reference",
+          "referenceto": "account",
+          "required": false
+        }
+      ]
+    },
+    "task": {
+      "name": "task",
+      "description": "Task",
+      "baselineattributes": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "created",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "updated",
+          "type": "datetime",
+          "required": true
+        }
+      ],
+      "parent": "productionorder",
+      "additionalattributes": [
+        {
+          "name": "start",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "end",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "location",
+          "type": "reference",
+          "required": true
+        }
+      ]
+    },
+    "productionorder": {
+      "name": "productionorder",
+      "description": "Production Order",
+      "baselineattributes": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "created",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "updated",
+          "type": "datetime",
+          "required": true
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "deliverydate",
+          "type": "datetime",
+          "required": false
+        },
+        {
+          "name": "deliverto",
+          "type": "reference",
+          "required": false
+        },
+        {
+          "name": "services",
+          "type": "array",
+          "required": false
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "payment",
+          "type": "reference",
+          "referenceto": "account",
+          "required": false
+        }
+      ]
+    },
+    "account": {
+      "name": "account",
+      "description": "Account",
+      "baselineattributes": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "created",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "updated",
+          "type": "datetime",
+          "required": true
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "balance",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "transactions",
+          "type": "array",
+          "required": false
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": true
+        }
+      ]
+    }
+  },
+  "models": {
+    "itemMethods": [
+      {
+        "name": "read",
+        "description": "Read a single item",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "The id of the item",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "returns": {
+          "type": "object"
+        }
+      },
+      {
+        "name": "create",
+        "description": "Create a new item",
+        "parameters": [
+          {
+            "name": "item",
+            "description": "The item to create",
+            "type": "object",
+            "required": true
+          }
+        ],
+        "returns": {
+          "type": "object"
+        }
+      },
+      {
+        "name": "update",
+        "description": "Update an existing item",
+        "parameters": [
+          {
+            "name": "item",
+            "description": "The item to update",
+            "type": "object",
+            "required": true
+          }
+        ],
+        "returns": {
+          "type": "object"
+        }
+      },
+      {
+        "name": "delete",
+        "description": "Delete an existing item",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "The id of the item",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "returns": {
+          "type": "void"
+        }
+      },
+      {
+        "name": "search",
+        "description": "Search for items",
+        "parameters": [
+          {
+            "name": "query",
+            "description": "The search query",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "returns": {
+          "type": "page"
+        }
+      }
+    ]
+  },
+  "services": [
+    {
+      "name": "user",
+      "entity": {
+        "type": "record",
+        "model": "user",
+        "objectname": "User",
+        "entity": {
+          "name": "user",
+          "description": "User",
+          "baselineattributes": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "created",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "updated",
+              "type": "datetime",
+              "required": true
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "email",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "meeting",
+      "entity": {
+        "type": "record",
+        "model": "meeting",
+        "objectname": "Meeting",
+        "entity": {
+          "name": "meeting",
+          "description": "Meeting",
+          "baselineattributes": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "created",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "updated",
+              "type": "datetime",
+              "required": true
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "start",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "end",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "location",
+              "type": "reference",
+              "required": true
+            },
+            {
+              "name": "organizer",
+              "type": "reference",
+              "required": true
+            },
+            {
+              "name": "participants",
+              "type": "array",
+              "required": false
+            },
+            {
+              "name": "guests",
+              "type": "array",
+              "required": false
+            },
+            {
+              "name": "viewers",
+              "type": "array",
+              "required": false
+            },
+            {
+              "name": "presenters",
+              "type": "array",
+              "required": false
+            },
+            {
+              "name": "hosts",
+              "type": "array",
+              "required": false
+            },
+            {
+              "name": "status",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "serviceorders",
+              "type": "array",
+              "required": false
+            },
+            {
+              "name": "exchangereference",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "exchangestatus",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "teamsreference",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "teamsstatus",
+              "type": "string",
+              "required": false
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "serviceorder",
+      "entity": {
+        "type": "record",
+        "model": "meeting",
+        "objectname": "Meeting",
+        "entity": {
+          "name": "serviceorder",
+          "description": "Service Order",
+          "baselineattributes": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "created",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "updated",
+              "type": "datetime",
+              "required": true
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "deliverydate",
+              "type": "datetime",
+              "required": false
+            },
+            {
+              "name": "deliverto",
+              "type": "reference",
+              "required": false
+            },
+            {
+              "name": "services",
+              "type": "array",
+              "required": false
+            },
+            {
+              "name": "status",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "payment",
+              "type": "reference",
+              "referenceto": "account",
+              "required": false
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "service",
+      "entity": {
+        "type": "record",
+        "model": "service",
+        "objectname": "Service",
+        "entity": {
+          "name": "service",
+          "description": "Service",
+          "baselineattributes": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "created",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "updated",
+              "type": "datetime",
+              "required": true
+            }
+          ],
+          "parent": "servicecategory",
+          "additionalattributes": [
+            {
+              "name": "price",
+              "type": "number",
+              "required": true
+            },
+            {
+              "name": "currency",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "servicecatalogue",
+      "entity": {
+        "type": "record",
+        "model": "servicecatalogue",
+        "objectname": "Servicecatalogue",
+        "entity": {
+          "name": "servicecatalogue",
+          "description": "Service Catalogue",
+          "baselineattributes": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "created",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "updated",
+              "type": "datetime",
+              "required": true
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "services",
+              "type": "array",
+              "required": false
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vendor",
+      "entity": {
+        "type": "record",
+        "model": "vendor",
+        "objectname": "Vendor",
+        "entity": {
+          "name": "vendor",
+          "description": "Vendor",
+          "baselineattributes": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "created",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "updated",
+              "type": "datetime",
+              "required": true
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "services",
+              "type": "array",
+              "required": false
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "servicecategory",
+      "entity": {
+        "type": "record",
+        "model": "servicecategory",
+        "objectname": "Servicecategory",
+        "entity": {
+          "name": "servicecategory",
+          "description": "Service Category",
+          "baselineattributes": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "created",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "updated",
+              "type": "datetime",
+              "required": true
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "serviceorder",
+      "entity": {
+        "type": "record",
+        "model": "serviceorder",
+        "objectname": "Serviceorder",
+        "entity": {
+          "name": "serviceorder",
+          "description": "Service Order",
+          "baselineattributes": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "created",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "updated",
+              "type": "datetime",
+              "required": true
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "deliverydate",
+              "type": "datetime",
+              "required": false
+            },
+            {
+              "name": "deliverto",
+              "type": "reference",
+              "required": false
+            },
+            {
+              "name": "services",
+              "type": "array",
+              "required": false
+            },
+            {
+              "name": "status",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "payment",
+              "type": "reference",
+              "referenceto": "account",
+              "required": false
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "task",
+      "entity": {
+        "type": "record",
+        "model": "task",
+        "objectname": "Task",
+        "entity": {
+          "name": "task",
+          "description": "Task",
+          "baselineattributes": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "created",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "updated",
+              "type": "datetime",
+              "required": true
+            }
+          ],
+          "parent": "productionorder",
+          "additionalattributes": [
+            {
+              "name": "start",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "end",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "location",
+              "type": "reference",
+              "required": true
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "productionorder",
+      "entity": {
+        "type": "record",
+        "model": "productionorder",
+        "objectname": "Productionorder",
+        "entity": {
+          "name": "productionorder",
+          "description": "Production Order",
+          "baselineattributes": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "created",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "updated",
+              "type": "datetime",
+              "required": true
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "deliverydate",
+              "type": "datetime",
+              "required": false
+            },
+            {
+              "name": "deliverto",
+              "type": "reference",
+              "required": false
+            },
+            {
+              "name": "services",
+              "type": "array",
+              "required": false
+            },
+            {
+              "name": "status",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "payment",
+              "type": "reference",
+              "referenceto": "account",
+              "required": false
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "account",
+      "entity": {
+        "type": "record",
+        "model": "account",
+        "objectname": "Account",
+        "entity": {
+          "name": "account",
+          "description": "Account",
+          "baselineattributes": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "created",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "updated",
+              "type": "datetime",
+              "required": true
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "balance",
+              "type": "number",
+              "required": true
+            },
+            {
+              "name": "currency",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "transactions",
+              "type": "array",
+              "required": false
+            },
+            {
+              "name": "status",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "building",
+      "entity": {
+        "type": "record",
+        "model": "building",
+        "objectname": "Building",
+        "entity": {
+          "name": "building",
+          "description": "Building",
+          "parent": "site",
+          "baselineattributes": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "created",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "updated",
+              "type": "datetime",
+              "required": true
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "address",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "site",
+      "entity": {
+        "type": "record",
+        "model": "site",
+        "objectname": "Site",
+        "entity": {
+          "name": "site",
+          "description": "Site",
+          "parent": "country",
+          "baselineattributes": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "created",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "updated",
+              "type": "datetime",
+              "required": true
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "address",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "country",
+      "entity": {
+        "type": "record",
+        "model": "country",
+        "objectname": "Country",
+        "entity": {
+          "name": "country",
+          "description": "Country",
+          "baselineattributes": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "created",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "updated",
+              "type": "datetime",
+              "required": true
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "code",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "floor",
+      "entity": {
+        "type": "record",
+        "model": "floor",
+        "objectname": "Floor",
+        "entity": {
+          "name": "floor",
+          "description": "Floor",
+          "baselineattributes": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "created",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "updated",
+              "type": "datetime",
+              "required": true
+            }
+          ],
+          "parent": "building"
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "meetingroom",
+      "entity": {
+        "type": "record",
+        "model": "meetingroom",
+        "objectname": "Meetingroom",
+        "entity": {
+          "name": "meetingroom",
+          "description": "Meeting Room",
+          "parent": "building",
+          "baselineattributes": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "created",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "updated",
+              "type": "datetime",
+              "required": true
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "email",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "capacity",
+              "type": "integer",
+              "required": true
+            },
+            {
+              "name": "features",
+              "type": "array",
+              "required": false
+            },
+            {
+              "name": "floor",
+              "type": "reference",
+              "required": false
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "communicationchannel",
+      "entity": {
+        "type": "record",
+        "model": "communicationchannel",
+        "objectname": "Communicationchannel",
+        "entity": {
+          "name": "communicationchannel",
+          "description": "Communication Channel",
+          "baselineattributes": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "created",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "updated",
+              "type": "datetime",
+              "required": true
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "type",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "address",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "messagetemplates",
+      "entity": {
+        "type": "record",
+        "model": "messagetemplates",
+        "objectname": "Messagetemplates",
+        "entity": {
+          "name": "messagetemplates",
+          "description": "Message Templates",
+          "baselineattributes": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "created",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "updated",
+              "type": "datetime",
+              "required": true
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "type",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "content",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    }
+  ]
+}

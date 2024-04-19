@@ -1,7 +1,7 @@
 import path from "path";
 import { cwd } from "process";
 import fs from "fs";
-import { pagemap } from "./nexi-infocast";
+import { pagemap } from "./magic-meetings";
 import { TestServicesNavigator } from "../components/testservicenavigator";
 import {
   Sheet,
@@ -14,6 +14,7 @@ import {
 import { MenuIcon } from "lucide-react";
 import { OpenInNewWindowIcon } from "@radix-ui/react-icons";
 import { VsCodeEdittoolbar } from "../components/VsCodeEdittoolbar";
+import { SERVICENAME } from "@/app/global";
 
 export default function Layout(props: { children: any }) {
   const { children } = props;
@@ -30,7 +31,7 @@ export default function Layout(props: { children: any }) {
         {/* <div>{folderPath}</div> */}
         <div className="flex">
           <div className="hidden lg:block lg:w-1/4">
-            <TestServicesNavigator appMap={pagemap} appName="nexi-infocast" />
+            <TestServicesNavigator appMap={pagemap} appName={SERVICENAME} />
           </div>
           <div className="lg:hidden ">
             <Sheet>
@@ -38,10 +39,7 @@ export default function Layout(props: { children: any }) {
                 <MenuIcon />
               </SheetTrigger>
               <SheetContent side="left">
-                <TestServicesNavigator
-                  appMap={pagemap}
-                  appName="nexi-infocast"
-                />
+                <TestServicesNavigator appMap={pagemap} appName={SERVICENAME} />
               </SheetContent>
             </Sheet>
           </div>

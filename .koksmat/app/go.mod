@@ -1,6 +1,8 @@
 module github.com/365admin/magic-meetings
 
-go 1.20
+go 1.21
+
+toolchain go1.21.1
 
 require (
 	github.com/go-chi/jwtauth/v5 v5.3.0
@@ -9,6 +11,12 @@ require (
 	github.com/swaggest/rest v0.2.61
 	github.com/swaggest/swgui v1.8.0
 	github.com/swaggest/usecase v1.3.1
+)
+
+require (
+	github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc // indirect
+	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect
+	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 )
 
 require (
@@ -58,7 +66,7 @@ require (
 	golang.org/x/crypto v0.18.0
 	golang.org/x/exp v0.0.0-20240119083558-1b970713d09a // indirect
 	golang.org/x/sync v0.6.0 // indirect
-	golang.org/x/sys v0.16.0 // indirect
+	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
@@ -69,4 +77,5 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.18.2
+	github.com/uptrace/bun v1.2.1
 )
