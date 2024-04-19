@@ -12,7 +12,7 @@ keep: false
 */ 
 import { run } from "@/koksmat/magicservices";
 import { ShowCodeFragment } from "@/services/ShowCodeFragment";
-import { Meeting } from "@/services/magic-meetings/models/meeeting";
+import { Meeting } from "@/services/magic-meetings/models/meeting";
 /**
  * Create a new item
  * 
