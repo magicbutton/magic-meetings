@@ -20,6 +20,16 @@ roles:
   - name: host
     description: Host
 
+accessroles:
+  - name: read
+    description: Read Access
+  - name: write
+    description: Write Access
+  - name: delete
+    description: Delete Access
+  - name: admin
+    description: Admin Access
+
 baseattributes:
   record: &recordAttributes
     - name: id
@@ -69,30 +79,41 @@ processes:
       - name: reschedule
         description: Reschedule Meeting
         result: meeting
-    
-      
-  
 
 entities:
   user: &user
     name: user
     description: User
     baselineattributes: *recordAttributes
-    additionalattributes:       
+    additionalattributes:
       - name: email
         type: string
-        required: true   
-
+        required: true
+  apikey: &apikey
+    name: apikey
+    description: API Key
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: key
+        type: string
+        required: true
+      - name: user
+        type: reference
+        referenceto: user
+        required: true
+      - name: validto
+        type: datetime
+        required: true
   meetingroom: &meetingroom
     name: meetingroom
     description: Meeting Room
     parent: building
     baselineattributes: *recordAttributes
-    additionalattributes:       
+    additionalattributes:
       - name: email
         type: string
         required: true
-      
+
       - name: capacity
         type: integer
         required: true
@@ -108,7 +129,7 @@ entities:
     name: communicationchannel
     description: Communication Channel
     baselineattributes: *recordAttributes
-    additionalattributes:       
+    additionalattributes:
       - name: type
         type: string
         required: true
@@ -120,7 +141,7 @@ entities:
     name: messagetemplates
     description: Message Templates
     baselineattributes: *recordAttributes
-    additionalattributes:       
+    additionalattributes:
       - name: type
         type: string
         required: true
@@ -133,13 +154,13 @@ entities:
     description: Floor
     baselineattributes: *recordAttributes
     parent: building
-      
-  building: &building 
+
+  building: &building
     name: building
     description: Building
     parent: site
     baselineattributes: *recordAttributes
-    additionalattributes:       
+    additionalattributes:
       - name: address
         type: string
         required: true
@@ -148,21 +169,21 @@ entities:
     description: Site
     parent: country
     baselineattributes: *recordAttributes
-    additionalattributes:       
+    additionalattributes:
       - name: address
         type: string
-        required: true 
+        required: true
 
   country: &country
     name: country
     description: Country
     baselineattributes: *recordAttributes
-    additionalattributes:       
+    additionalattributes:
       - name: code
         type: string
         required: true
-  
-  meeting: &meeting 
+
+  meeting: &meeting
     name: meeting
     description: Meeting
     baselineattributes: *recordAttributes
@@ -185,7 +206,7 @@ entities:
       - name: guests
         type: array
         required: false
-      - name: viewers 
+      - name: viewers
         type: array
         required: false
       - name: presenters
@@ -280,7 +301,7 @@ entities:
       - name: location
         type: reference
         required: true
-    
+
   productionorder: &productionorder
     name: productionorder
     description: Production Order
@@ -319,11 +340,107 @@ entities:
       - name: status
         type: string
         required: true
-
-
-models:
+  signal: &signal
+    name: signal
+    description: Signal
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: sender
+        type: string
+        required: true
+      - name: receiver
+        type: string
+        required: true
+  messageLog: &messagelog
+    name: messagelog
+    description: Messagelog
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: sender
+        type: string
+        required: true
+      - name: receiver
+        type: string
+        required: true
+      - name: message
+        type: string
+        required: true
+  audutlog: &auditlog
+    name: auditlog
+    description: Auditlog
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: action
+        type: string
+        required: true
+      - name: user
+        type: reference
+        referenceto: user
+        required: true
+      - name: entity
+        type: string
+        required: true
+      - name: entityid
+        type: string
+        required: true
+      - name: timestamp
+        type: datetime
+        required: true
+  visitor: &visitor
+    name: visitor
+    description: Visitor
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: email
+        type: string
+        required: true
+      - name: phone
+        type: string
+        required: true
+      - name: company
+        type: string
+        required: true
+      - name: purpose
+        type: string
+        required: true
+      - name: host
+        type: reference
+        referenceto: user
+        required: true
+      - name: status
+        type: string
+        required: true
+  accesspass: &accesspass
+    name: accesspass
+    description: Access Pass
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: visitor
+        type: reference
+        referenceto: visitor
+        required: true
+      - name: validfrom
+        type: datetime
+        required: true
+      - name: validto
+        type: datetime
+        required: true
+      - name: status
+        type: string
+        required: true
+  accesspoint: &accesspoint
+    name: accesspoint
+    description: Access Point
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: location
+        type: reference
+        required: true
+      - name: status
+        type: string
+        required: true
+methods:
   itemMethods: &itemMethods
-
     - name: read
       description: Read a single item
       parameters:
@@ -333,7 +450,7 @@ models:
           required: true
       returns:
         type: object
-      
+
     - name: create
       description: Create a new item
       parameters:
@@ -342,7 +459,7 @@ models:
           type: object
           required: true
       returns:
-        type: object          
+        type: object
     - name: update
       description: Update an existing item
       parameters:
@@ -351,8 +468,8 @@ models:
           type: object
           required: true
       returns:
-        type: object          
-         
+        type: object
+
     - name: delete
       description: Delete an existing item
       parameters:
@@ -361,7 +478,7 @@ models:
           type: string
           required: true
       returns:
-        type: void          
+        type: void
     - name: search
       description: Search for items
       parameters:
@@ -369,38 +486,38 @@ models:
           description: The search query
           type: string
           required: true
-          
+
       returns:
-        type: page          
+        type: page
 
 services:
   - name: user
 
-    entity: 
+    entity:
       type: record
       model: user
       objectname: User
       entity: *user
     methods: *itemMethods
-  
+
   - name: meeting
-    entity: 
+    entity:
       type: record
       model: meeting
       objectname: Meeting
       entity: *meeting
     methods: *itemMethods
-  
+
   - name: serviceorder
-    entity: 
+    entity:
       type: record
       model: meeting
       objectname: Meeting
       entity: *serviceorder
     methods: *itemMethods
-  
+
   - name: service
-    entity: 
+    entity:
       type: record
       model: service
       objectname: Service
@@ -408,15 +525,15 @@ services:
     methods: *itemMethods
 
   - name: servicecatalogue
-    entity: 
+    entity:
       type: record
       model: servicecatalogue
       objectname: Servicecatalogue
       entity: *servicecatalogue
     methods: *itemMethods
 
-  - name: vendor 
-    entity: 
+  - name: vendor
+    entity:
       type: record
       model: vendor
       objectname: Vendor
@@ -424,31 +541,31 @@ services:
     methods: *itemMethods
 
   - name: servicecategory
-    entity: 
+    entity:
       type: record
       model: servicecategory
       objectname: Servicecategory
       entity: *servicecategory
     methods: *itemMethods
 
-  - name: serviceorder  
-    entity: 
+  - name: serviceorder
+    entity:
       type: record
       model: serviceorder
       objectname: Serviceorder
       entity: *serviceorder
     methods: *itemMethods
 
-  - name: task  
-    entity: 
+  - name: task
+    entity:
       type: record
       model: task
       objectname: Task
       entity: *task
     methods: *itemMethods
-  
+
   - name: productionorder
-    entity: 
+    entity:
       type: record
       model: productionorder
       objectname: Productionorder
@@ -456,7 +573,7 @@ services:
     methods: *itemMethods
 
   - name: account
-    entity: 
+    entity:
       type: record
       model: account
       objectname: Account
@@ -464,15 +581,15 @@ services:
     methods: *itemMethods
 
   - name: building
-    entity: 
+    entity:
       type: record
       model: building
       objectname: Building
       entity: *building
     methods: *itemMethods
 
-  - name: site  
-    entity: 
+  - name: site
+    entity:
       type: record
       model: site
       objectname: Site
@@ -480,15 +597,15 @@ services:
     methods: *itemMethods
 
   - name: country
-    entity: 
+    entity:
       type: record
       model: country
       objectname: Country
       entity: *country
     methods: *itemMethods
 
-  - name: floor 
-    entity: 
+  - name: floor
+    entity:
       type: record
       model: floor
       objectname: Floor
@@ -496,7 +613,7 @@ services:
     methods: *itemMethods
 
   - name: meetingroom
-    entity: 
+    entity:
       type: record
       model: meetingroom
       objectname: Meetingroom
@@ -504,7 +621,7 @@ services:
     methods: *itemMethods
 
   - name: communicationchannel
-    entity: 
+    entity:
       type: record
       model: communicationchannel
       objectname: Communicationchannel
@@ -512,32 +629,66 @@ services:
     methods: *itemMethods
 
   - name: messagetemplates
-    entity: 
+    entity:
       type: record
       model: messagetemplates
       objectname: Messagetemplates
       entity: *messagetemplates
     methods: *itemMethods
 
+  - name: signal
+    entity:
+      type: record
+      model: signal
+      objectname: Signal
+      entity: *signal
+    methods: *itemMethods
 
+  - name: messagelog
+    entity:
+      type: record
+      model: messagelog
+      objectname: Messagelog
+      entity: *messagelog
+    methods: *itemMethods
 
+  - name: auditlog
+    entity:
+      type: record
+      model: auditlog
+      objectname: Auditlog
+      entity: *auditlog
+    methods: *itemMethods
 
-  
-      
-  # - name: group
-  #   description: Manage Groups
-  #   entity: 
-  #     type: record
-  #     model: group
-  #     objectname: Group
+  - name: visitor
+    entity:
+      type: record
+      model: visitor
+      objectname: Visitor
+      entity: *visitor
+    methods: *itemMethods
 
-  #   methods: *itemMethods
+  - name: accesspass
+    entity:
+      type: record
+      model: accesspass
+      objectname: Accesspass
+      entity: *accesspass
+    methods: *itemMethods
 
-  # - name: groupsegment
-  #   description: Manage Group Segments
-  #   entity: 
-  #     type: record
-  #     model: groupsegment
-  #     objectname: Groupsegment
+  - name: accesspoint
+    entity:
+      type: record
+      model: accesspoint
+      objectname: Accesspoint
+      entity: *accesspoint
+    methods: *itemMethods
 
-  #   methods: *itemMethods
+  - name: apikey
+    entity:
+      role: admin
+      type: record
+      model: apikey
+      objectname: Apikey
+      entity: *apikey
+    methods: *itemMethods

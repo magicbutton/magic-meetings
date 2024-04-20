@@ -13,7 +13,7 @@ import (
 
 	"github.com/swaggest/usecase"
 
-	"github.com/365admin/magic-meetings/execution"
+	"github.com/magicbutton/magic-meetings/execution"
 )
 
 func HealthCoreversionPost() usecase.Interactor {

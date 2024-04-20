@@ -3,8 +3,8 @@ package magicapp
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/365admin/magic-meetings/cmds"
-	"github.com/365admin/magic-meetings/utils"
+	"github.com/magicbutton/magic-meetings/cmds"
+	"github.com/magicbutton/magic-meetings/utils"
 )
 
 func RegisterCmds() {

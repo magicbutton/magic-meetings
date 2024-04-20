@@ -21,7 +21,6 @@ export const pagemap : AppMap = {
   "name": "magic-meetings",
   "services": [
     {
-      "name": "user",
       "endpoints": [
         {
           "name": "read"
@@ -38,10 +37,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ]
+      ],
+      "name": "user"
     },
     {
-      "name": "meeting",
       "endpoints": [
         {
           "name": "read"
@@ -58,10 +57,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ]
+      ],
+      "name": "meeting"
     },
     {
-      "name": "serviceorder",
       "endpoints": [
         {
           "name": "read"
@@ -78,10 +77,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ]
+      ],
+      "name": "serviceorder"
     },
     {
-      "name": "service",
       "endpoints": [
         {
           "name": "read"
@@ -98,10 +97,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ]
+      ],
+      "name": "service"
     },
     {
-      "name": "servicecatalogue",
       "endpoints": [
         {
           "name": "read"
@@ -118,10 +117,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ]
+      ],
+      "name": "servicecatalogue"
     },
     {
-      "name": "vendor",
       "endpoints": [
         {
           "name": "read"
@@ -138,10 +137,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ]
+      ],
+      "name": "vendor"
     },
     {
-      "name": "servicecategory",
       "endpoints": [
         {
           "name": "read"
@@ -158,10 +157,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ]
+      ],
+      "name": "servicecategory"
     },
     {
-      "name": "serviceorder",
       "endpoints": [
         {
           "name": "read"
@@ -178,10 +177,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ]
+      ],
+      "name": "serviceorder"
     },
     {
-      "name": "task",
       "endpoints": [
         {
           "name": "read"
@@ -198,10 +197,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ]
+      ],
+      "name": "task"
     },
     {
-      "name": "productionorder",
       "endpoints": [
         {
           "name": "read"
@@ -218,10 +217,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ]
+      ],
+      "name": "productionorder"
     },
     {
-      "name": "account",
       "endpoints": [
         {
           "name": "read"
@@ -238,10 +237,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ]
+      ],
+      "name": "account"
     },
     {
-      "name": "building",
       "endpoints": [
         {
           "name": "read"
@@ -258,10 +257,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ]
+      ],
+      "name": "building"
     },
     {
-      "name": "site",
       "endpoints": [
         {
           "name": "read"
@@ -278,10 +277,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ]
+      ],
+      "name": "site"
     },
     {
-      "name": "country",
       "endpoints": [
         {
           "name": "read"
@@ -298,10 +297,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ]
+      ],
+      "name": "country"
     },
     {
-      "name": "floor",
       "endpoints": [
         {
           "name": "read"
@@ -318,10 +317,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ]
+      ],
+      "name": "floor"
     },
     {
-      "name": "meetingroom",
       "endpoints": [
         {
           "name": "read"
@@ -338,10 +337,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ]
+      ],
+      "name": "meetingroom"
     },
     {
-      "name": "communicationchannel",
       "endpoints": [
         {
           "name": "read"
@@ -358,10 +357,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ]
+      ],
+      "name": "communicationchannel"
     },
     {
-      "name": "messagetemplates",
       "endpoints": [
         {
           "name": "read"
@@ -378,7 +377,148 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ]
+      ],
+      "name": "messagetemplates"
+    },
+    {
+      "endpoints": [
+        {
+          "name": "read"
+        },
+        {
+          "name": "create"
+        },
+        {
+          "name": "update"
+        },
+        {
+          "name": "delete"
+        },
+        {
+          "name": "search"
+        }
+      ],
+      "name": "signal"
+    },
+    {
+      "endpoints": [
+        {
+          "name": "read"
+        },
+        {
+          "name": "create"
+        },
+        {
+          "name": "update"
+        },
+        {
+          "name": "delete"
+        },
+        {
+          "name": "search"
+        }
+      ],
+      "name": "messagelog"
+    },
+    {
+      "endpoints": [
+        {
+          "name": "read"
+        },
+        {
+          "name": "create"
+        },
+        {
+          "name": "update"
+        },
+        {
+          "name": "delete"
+        },
+        {
+          "name": "search"
+        }
+      ],
+      "name": "auditlog"
+    },
+    {
+      "endpoints": [
+        {
+          "name": "read"
+        },
+        {
+          "name": "create"
+        },
+        {
+          "name": "update"
+        },
+        {
+          "name": "delete"
+        },
+        {
+          "name": "search"
+        }
+      ],
+      "name": "visitor"
+    },
+    {
+      "endpoints": [
+        {
+          "name": "read"
+        },
+        {
+          "name": "create"
+        },
+        {
+          "name": "update"
+        },
+        {
+          "name": "delete"
+        },
+        {
+          "name": "search"
+        }
+      ],
+      "name": "accesspass"
+    },
+    {
+      "endpoints": [
+        {
+          "name": "read"
+        },
+        {
+          "name": "create"
+        },
+        {
+          "name": "update"
+        },
+        {
+          "name": "delete"
+        },
+        {
+          "name": "search"
+        }
+      ],
+      "name": "accesspoint"
+    },
+    {
+      "endpoints": [
+        {
+          "name": "read"
+        },
+        {
+          "name": "create"
+        },
+        {
+          "name": "update"
+        },
+        {
+          "name": "delete"
+        },
+        {
+          "name": "search"
+        }
+      ],
+      "name": "apikey"
     }
   ]
 }

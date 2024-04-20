@@ -11,8 +11,8 @@ package cmds
 import (
 	"context"
 
-	"github.com/365admin/magic-meetings/execution"
-	"github.com/365admin/magic-meetings/utils"
+	"github.com/magicbutton/magic-meetings/execution"
+	"github.com/magicbutton/magic-meetings/utils"
 )
 
 func ProvisionWebdeploytestPost(ctx context.Context, args []string) (*string, error) {

@@ -4,8 +4,8 @@ import (
 	"runtime/debug"
 	"strings"
 
-	"github.com/365admin/magic-meetings/magicapp"
-	"github.com/365admin/magic-meetings/utils"
+	"github.com/magicbutton/magic-meetings/magicapp"
+	"github.com/magicbutton/magic-meetings/utils"
 )
 
 func main() {
