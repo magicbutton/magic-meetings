@@ -31,8 +31,9 @@ accessroles:
     description: Admin Access
 
 baseattributes:
-  record: &recordAttributes
-    - name: id
+  record:
+    &recordAttributes # Id + Created + Updated + CreatedBy + UpdatedBy are implicit
+    - name: tenant
       type: string
       required: true
     - name: name
@@ -41,46 +42,20 @@ baseattributes:
     - name: description
       type: string
       required: false
-    - name: created
-      type: datetime
-      required: true
-    - name: updated
-      type: datetime
-      required: true
-
-processes:
-  - name: prepare
-    description: Prepare Meeting
-    result: meeting
-  - name: cancel
-    description: Cancel Meeting
-    result: meeting
-  - name: reschedule
-    description: Reschedule Meeting
-    result: meeting
-  - name: individualactions
-    description: Individual Actions
-    sequence:
-      - name: accept
-        description: Accept Invitation
-        result: meeting
-      - name: decline
-        description: Decline Invitation
-        result: meeting
-      - name: propose
-        description: Propose New Time
-        result: meeting
-      - name: confirm
-        description: Confirm Meeting
-        result: meeting
-      - name: cancel
-        description: Cancel Meeting
-        result: meeting
-      - name: reschedule
-        description: Reschedule Meeting
-        result: meeting
 
 entities:
+  tenant: &tenant
+    name: tenant
+    description: User
+    baselineattributes:
+      - name: name
+        type: string
+        required: true
+      - name: description
+        type: string
+        required: false
+    additionalattributes:
+
   user: &user
     name: user
     description: User
@@ -491,6 +466,13 @@ methods:
         type: page
 
 services:
+  - name: tenant
+    entity:
+      type: record
+      model: tenant
+      objectname: Tenant
+      entity: *tenant
+    methods: *itemMethods
   - name: user
 
     entity:
@@ -692,3 +674,68 @@ services:
       objectname: Apikey
       entity: *apikey
     methods: *itemMethods
+
+processes:
+  - stage: preperation
+    substages:
+      - name: prepare
+        description: Prepare Meeting
+        entity: *meeting
+        state: draft
+      - name: cancel
+        description: Cancel Meeting
+        trigger: meetingcancellationrequest
+        result: cancelledmeeting
+        entity: *meeting
+        state: cancelled
+      - name: reschedule
+        description: Reschedule Meeting
+        result: meeting
+  - stage: prearrival
+  - stage: arrival
+  - stage: execution
+    substages:
+      - name: start
+        description: Start Meeting
+        result: meeting
+      - name: end
+        description: End Meeting
+        result: meeting
+      - name: followup
+        description: Follow Up Meeting
+        result: meeting
+  - stage: predeparture
+  - stage: departure
+  - stage: postmeeting
+    substages:
+      - name: feedback
+        description: Feedback Meeting
+        result: meeting
+      - name: audit
+        description: Audit Meeting
+        result: meeting
+      - name: archive
+        description: Archive Meeting
+        result: meeting
+
+  - name: individualactions
+    description: Individual Actions
+    sequence:
+      - name: accept
+        description: Accept Invitation
+        result: meeting
+      - name: decline
+        description: Decline Invitation
+        result: meeting
+      - name: propose
+        description: Propose New Time
+        result: meeting
+      - name: confirm
+        description: Confirm Meeting
+        result: meeting
+      - name: cancel
+        description: Cancel Meeting
+        result: meeting
+      - name: reschedule
+        description: Reschedule Meeting
+        result: meeting

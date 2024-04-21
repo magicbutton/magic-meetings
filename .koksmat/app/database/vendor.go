@@ -14,7 +14,7 @@ import (
 )
 
 type Vendor struct {
-	bun.BaseModel `bun:"table:{name},alias:name"`
+	bun.BaseModel `bun:"table:vendor,alias:vendor"`
 
 	ID             int64     `bun:"id,pk,autoincrement"`
 	CreatedAt      time.Time `bun:",nullzero,notnull,default:current_timestamp"`

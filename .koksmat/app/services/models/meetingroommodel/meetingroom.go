@@ -5,10 +5,12 @@ set the Front Matter property ´keep´ to ´true´ syntax for the code snippet
 keep: false
 ---
 */   
+//GenerateGoModel v1
 package meetingroommodel
 import (
 	"encoding/json"
 	"time"
+    "github.com/magicbutton/magic-meetings/database/databasetypes"
 )
 
 func UnmarshalMeetingroom(data []byte) (Meetingroom, error) {
@@ -25,6 +27,13 @@ type Meetingroom struct {
     ID        string    `json:"id"`
     CreatedAt time.Time `json:"created_at"`
     UpdatedAt time.Time `json:"updated_at"`
+        Tenant string `json:"tenant"`
+    Name string `json:"name"`
+    Description string `json:"description"`
+    Email string `json:"email"`
+    Capacity int `json:"capacity"`
+    Features []databasetypes.Page `json:"features"`
+    Floor databasetypes.Reference `json:"floor"`
 
 }
 

@@ -5,10 +5,12 @@ set the Front Matter property ´keep´ to ´true´ syntax for the code snippet
 keep: false
 ---
 */   
+//GenerateGoModel v1
 package serviceordermodel
 import (
 	"encoding/json"
 	"time"
+    "github.com/magicbutton/magic-meetings/database/databasetypes"
 )
 
 func UnmarshalServiceorder(data []byte) (Serviceorder, error) {
@@ -25,6 +27,14 @@ type Serviceorder struct {
     ID        string    `json:"id"`
     CreatedAt time.Time `json:"created_at"`
     UpdatedAt time.Time `json:"updated_at"`
+        Tenant string `json:"tenant"`
+    Name string `json:"name"`
+    Description string `json:"description"`
+    Deliverydate time.Time `json:"deliverydate"`
+    Deliverto databasetypes.Reference `json:"deliverto"`
+    Services []databasetypes.Page `json:"services"`
+    Status string `json:"status"`
+    Payment databasetypes.Reference `json:"payment"`
 
 }
 

@@ -24,6 +24,9 @@ description: Describe the main purpose of this kitchen
 	magicapp.Setup(".env")
 	magicapp.RegisterServeCmd("magic-meetings", description, "0.0.1", 8080)
 	magicapp.RegisterCmds()
+	magicapp.RegisterServiceCmd()
+	magicapp.RegisterBun()
+
 	utils.RootCmd.PersistentFlags().BoolVarP(&utils.Verbose, "verbose", "v", false, "verbose output")
 
 	magicapp.Execute(name, "magic-meetings", "")

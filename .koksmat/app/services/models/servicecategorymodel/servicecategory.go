@@ -5,10 +5,12 @@ set the Front Matter property ´keep´ to ´true´ syntax for the code snippet
 keep: false
 ---
 */   
+//GenerateGoModel v1
 package servicecategorymodel
 import (
 	"encoding/json"
 	"time"
+    
 )
 
 func UnmarshalServicecategory(data []byte) (Servicecategory, error) {
@@ -25,6 +27,9 @@ type Servicecategory struct {
     ID        string    `json:"id"`
     CreatedAt time.Time `json:"created_at"`
     UpdatedAt time.Time `json:"updated_at"`
+        Tenant string `json:"tenant"`
+    Name string `json:"name"`
+    Description string `json:"description"`
 
 }
 

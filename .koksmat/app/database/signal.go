@@ -14,7 +14,7 @@ import (
 )
 
 type Signal struct {
-	bun.BaseModel `bun:"table:{name},alias:name"`
+	bun.BaseModel `bun:"table:signal,alias:signal"`
 
 	ID             int64     `bun:"id,pk,autoincrement"`
 	CreatedAt      time.Time `bun:",nullzero,notnull,default:current_timestamp"`

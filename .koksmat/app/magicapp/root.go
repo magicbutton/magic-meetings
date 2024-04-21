@@ -3,16 +3,16 @@ package magicapp
 import (
 	"os"
 
-	"github.com/spf13/cobra"
+	"github.com/magicbutton/magic-meetings/utils"
 )
 
-var RootCmd = &cobra.Command{}
+//var RootCmd = &cobra.Command{}
 
 func Execute(use string, short string, long string) {
-	RootCmd.Use = use
-	RootCmd.Short = short
-	RootCmd.Long = long
-	err := RootCmd.Execute()
+	utils.RootCmd.Use = use
+	utils.RootCmd.Short = short
+	utils.RootCmd.Long = long
+	err := utils.RootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
 	}

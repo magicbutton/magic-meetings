@@ -14,7 +14,7 @@ import (
 )
 
 type Service struct {
-	bun.BaseModel `bun:"table:{name},alias:name"`
+	bun.BaseModel `bun:"table:service,alias:service"`
 
 	ID             int64     `bun:"id,pk,autoincrement"`
 	CreatedAt      time.Time `bun:",nullzero,notnull,default:current_timestamp"`
