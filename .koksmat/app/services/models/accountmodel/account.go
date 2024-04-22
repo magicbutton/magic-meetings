@@ -10,7 +10,7 @@ package accountmodel
 import (
 	"encoding/json"
 	"time"
-    "github.com/magicbutton/magic-meetings/database/databasetypes"
+    
 )
 
 func UnmarshalAccount(data []byte) (Account, error) {
@@ -32,7 +32,6 @@ type Account struct {
     Description string `json:"description"`
     Balance int `json:"balance"`
     Currency string `json:"currency"`
-    Transactions []databasetypes.Page `json:"transactions"`
     Status string `json:"status"`
 
 }

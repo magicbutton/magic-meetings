@@ -30,9 +30,9 @@ type Task struct {
         Tenant string `json:"tenant"`
     Name string `json:"name"`
     Description string `json:"description"`
-    Start time.Time `json:"start"`
-    End time.Time `json:"end"`
-    Location databasetypes.Reference `json:"location"`
+    Starttime time.Time `json:"starttime"`
+    Location string `json:"location"`
+    Responsible databasetypes.Reference `json:"responsible"`
 
 }
 

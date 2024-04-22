@@ -75,31 +75,12 @@ entities:
       - name: user
         type: reference
         referenceto: user
+        entity: *user
         required: true
       - name: validto
         type: datetime
         required: true
-  meetingroom: &meetingroom
-    name: meetingroom
-    description: Meeting Room
-    parent: building
-    baselineattributes: *recordAttributes
-    additionalattributes:
-      - name: email
-        type: string
-        required: true
 
-      - name: capacity
-        type: integer
-        required: true
-
-      - name: features
-        type: array
-        required: false
-
-      - name: floor
-        type: reference
-        required: false
   communicationchannel: &communicationchannel
     name: communicationchannel
     description: Communication Channel
@@ -124,31 +105,6 @@ entities:
         type: string
         required: true
 
-  floor: &floor
-    name: floor
-    description: Floor
-    baselineattributes: *recordAttributes
-    parent: building
-
-  building: &building
-    name: building
-    description: Building
-    parent: site
-    baselineattributes: *recordAttributes
-    additionalattributes:
-      - name: address
-        type: string
-        required: true
-  site: &site
-    name: site
-    description: Site
-    parent: country
-    baselineattributes: *recordAttributes
-    additionalattributes:
-      - name: address
-        type: string
-        required: true
-
   country: &country
     name: country
     description: Country
@@ -157,57 +113,79 @@ entities:
       - name: code
         type: string
         required: true
-
-  meeting: &meeting
-    name: meeting
-    description: Meeting
+  site: &site
+    name: site
+    description: Site
+    parent: *country
     baselineattributes: *recordAttributes
     additionalattributes:
-      - name: start
-        type: datetime
+      - name: address
+        type: string
         required: true
-      - name: end
-        type: datetime
+  building: &building
+    name: building
+    description: Building
+    parent: *site
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: address
+        type: string
         required: true
-      - name: location
-        type: reference
+  floor: &floor
+    name: floor
+    description: Floor
+    baselineattributes: *recordAttributes
+    parent: *building
+  meetingroom: &meetingroom
+    name: meetingroom
+    description: Meeting Room
+    parent: *floor
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: email
+        type: string
         required: true
-      - name: organizer
-        type: reference
+
+      - name: capacity
+        type: integer
         required: true
-      - name: participants
-        type: array
+
+      - name: features
+        type: string
         required: false
-      - name: guests
-        type: array
-        required: false
-      - name: viewers
-        type: array
-        required: false
-      - name: presenters
-        type: array
-        required: false
-      - name: hosts
-        type: array
-        required: false
+
+  account: &account
+    name: account
+    description: Account
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: balance
+        type: number
+        required: true
+      - name: currency
+        type: string
+        required: true
       - name: status
         type: string
         required: true
-      - name: serviceorders
-        type: array
-        required: false
-      - name: exchangereference
+  transaction: &transaction
+    name: transaction
+    description: Transaction
+    parent: *account
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: amount
+        type: number
+        required: true
+      - name: currency
         type: string
-        required: false
-      - name: exchangestatus
+        required: true
+      - name: datetime
+        type: datetime
+        required: true
+      - name: status
         type: string
-        required: false
-      - name: teamsreference
-        type: string
-        required: false
-      - name: teamsstatus
-        type: string
-        required: false
+        required: true
   servicecategory: &servicecategory
     name: servicecategory
     description: Service Category
@@ -216,7 +194,7 @@ entities:
     name: service
     description: Service
     baselineattributes: *recordAttributes
-    parent: servicecategory
+    parent: *servicecategory
     additionalattributes:
       - name: price
         type: number
@@ -231,6 +209,7 @@ entities:
     additionalattributes:
       - name: services
         type: array
+        entity: *service
         required: false
   vendor: &vendor
     name: vendor
@@ -239,6 +218,7 @@ entities:
     additionalattributes:
       - name: services
         type: array
+        entity: *service
         required: false
   serviceorder: &serviceorder
     name: serviceorder
@@ -250,15 +230,18 @@ entities:
         required: false
       - name: deliverto
         type: reference
+        entity: *user
         required: false
       - name: services
         type: array
+        entity: *service
         required: false
       - name: status
         type: string
         required: true
       - name: payment
         type: reference
+        entity: *account
         referenceto: account
         required: false
   task: &task
@@ -267,14 +250,15 @@ entities:
     baselineattributes: *recordAttributes
     parent: productionorder
     additionalattributes:
-      - name: start
-        type: datetime
-        required: true
-      - name: end
+      - name: starttime
         type: datetime
         required: true
       - name: location
+        type: string
+        required: true
+      - name: responsible
         type: reference
+        entity: *user
         required: true
 
   productionorder: &productionorder
@@ -286,35 +270,22 @@ entities:
         type: datetime
         required: false
       - name: deliverto
-        type: reference
+        type: reference$
+        entity: *user
         required: false
       - name: services
         type: array
+        entity: *service
         required: false
       - name: status
         type: string
         required: true
       - name: payment
         type: reference
+        entity: *account
         referenceto: account
         required: false
-  account: &account
-    name: account
-    description: Account
-    baselineattributes: *recordAttributes
-    additionalattributes:
-      - name: balance
-        type: number
-        required: true
-      - name: currency
-        type: string
-        required: true
-      - name: transactions
-        type: array
-        required: false
-      - name: status
-        type: string
-        required: true
+
   signal: &signal
     name: signal
     description: Signal
@@ -340,7 +311,7 @@ entities:
       - name: message
         type: string
         required: true
-  audutlog: &auditlog
+  auditlog: &auditlog
     name: auditlog
     description: Auditlog
     baselineattributes: *recordAttributes
@@ -350,6 +321,7 @@ entities:
         required: true
       - name: user
         type: reference
+        entity: *user
         referenceto: user
         required: true
       - name: entity
@@ -380,25 +352,8 @@ entities:
         required: true
       - name: host
         type: reference
+        entity: *user
         referenceto: user
-        required: true
-      - name: status
-        type: string
-        required: true
-  accesspass: &accesspass
-    name: accesspass
-    description: Access Pass
-    baselineattributes: *recordAttributes
-    additionalattributes:
-      - name: visitor
-        type: reference
-        referenceto: visitor
-        required: true
-      - name: validfrom
-        type: datetime
-        required: true
-      - name: validto
-        type: datetime
         required: true
       - name: status
         type: string
@@ -410,10 +365,89 @@ entities:
     additionalattributes:
       - name: location
         type: reference
+        entity: *site
         required: true
       - name: status
         type: string
         required: true
+  accesspass: &accesspass
+    name: accesspass
+    description: Access Pass
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: visitor
+        type: reference
+        entity: *visitor
+        referenceto: visitor
+        required: true
+      - name: validfrom
+        type: datetime
+        required: true
+      - name: validto
+        type: datetime
+        required: true
+      - name: status
+        type: string
+        required: true
+  meeting: &meeting
+    name: meeting
+    description: Meeting
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: start
+        type: datetime
+        required: true
+      - name: duration
+        type: integer
+        description: Duration in minutes
+        required: true
+      - name: location
+        type: string
+
+        required: true
+      - name: organizer
+        type: reference
+        entity: *user
+        required: true
+      - name: participants
+        type: array
+        entity: *user
+        required: false
+      - name: guests
+        type: array
+        entity: *user
+        required: false
+      - name: viewers
+        type: array
+        entity: *user
+        required: false
+      - name: presenters
+        type: array
+        entity: *user
+        required: false
+      - name: hosts
+        type: array
+        entity: *user
+        required: false
+      - name: status
+        type: string
+        required: true
+      - name: serviceorders
+        type: array
+        entity: *serviceorder
+        required: false
+      - name: exchangereference
+        type: string
+        required: false
+      - name: exchangestatus
+        type: string
+        required: false
+      - name: teamsreference
+        type: string
+        required: false
+      - name: teamsstatus
+        type: string
+        required: false
 methods:
   itemMethods: &itemMethods
     - name: read
@@ -488,14 +522,6 @@ services:
       model: meeting
       objectname: Meeting
       entity: *meeting
-    methods: *itemMethods
-
-  - name: serviceorder
-    entity:
-      type: record
-      model: meeting
-      objectname: Meeting
-      entity: *serviceorder
     methods: *itemMethods
 
   - name: service
@@ -718,24 +744,52 @@ processes:
         description: Archive Meeting
         result: meeting
 
-  - name: individualactions
-    description: Individual Actions
-    sequence:
-      - name: accept
-        description: Accept Invitation
-        result: meeting
-      - name: decline
-        description: Decline Invitation
-        result: meeting
-      - name: propose
-        description: Propose New Time
-        result: meeting
-      - name: confirm
-        description: Confirm Meeting
-        result: meeting
-      - name: cancel
-        description: Cancel Meeting
-        result: meeting
-      - name: reschedule
-        description: Reschedule Meeting
-        result: meeting
+events:
+  - name: meetinginvitation
+    description: Meeting Invitation
+    trigger: meetinginvitation
+    result: meeting
+  - name: meetingcancellationrequest
+    description: Meeting Cancellation Request
+    trigger: meetingcancellationrequest
+    result: meeting
+  - name: meetingreschedule
+    description: Meeting Reschedule
+    trigger: meetingreschedule
+    result: meeting
+  - name: meetingconfirmation
+    description: Meeting Confirmation
+    trigger: meetingconfirmation
+    result: meeting
+  - name: meetingdecline
+    description: Meeting Decline
+    trigger: meetingdecline
+    result: meeting
+  - name: meetingaccept
+    description: Meeting Accept
+    trigger: meetingaccept
+    result: meeting
+  - name: meetingstart
+    description: Meeting Start
+    trigger: meetingstart
+    result: meeting
+  - name: meetingend
+    description: Meeting End
+    trigger: meetingend
+    result: meeting
+  - name: meetingfollowup
+    description: Meeting Follow Up
+    trigger: meetingfollowup
+    result: meeting
+  - name: meetingfeedback
+    description: Meeting Feedback
+    trigger: meetingfeedback
+    result: meeting
+  - name: meetingaudit
+    description: Meeting Audit
+    trigger: meetingaudit
+    result: meeting
+  - name: meetingarchive
+    description: Meeting Archive
+    trigger: meetingarchive
+    result: meeting

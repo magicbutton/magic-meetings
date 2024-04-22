@@ -13,9 +13,9 @@ import (
 )
 
 func RegisterServiceEndpoints(root micro.Group) {
-    root.AddEndpoint("user", micro.HandlerFunc(services.HandleUserRequests))
+    root.AddEndpoint("tenant", micro.HandlerFunc(services.HandleTenantRequests))
+        root.AddEndpoint("user", micro.HandlerFunc(services.HandleUserRequests))
         root.AddEndpoint("meeting", micro.HandlerFunc(services.HandleMeetingRequests))
-        root.AddEndpoint("serviceorder", micro.HandlerFunc(services.HandleMeetingRequests))
         root.AddEndpoint("service", micro.HandlerFunc(services.HandleServiceRequests))
         root.AddEndpoint("servicecatalogue", micro.HandlerFunc(services.HandleServicecatalogueRequests))
         root.AddEndpoint("vendor", micro.HandlerFunc(services.HandleVendorRequests))

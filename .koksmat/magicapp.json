@@ -34,10 +34,28 @@
       "description": "Host"
     }
   ],
+  "accessroles": [
+    {
+      "name": "read",
+      "description": "Read Access"
+    },
+    {
+      "name": "write",
+      "description": "Write Access"
+    },
+    {
+      "name": "delete",
+      "description": "Delete Access"
+    },
+    {
+      "name": "admin",
+      "description": "Admin Access"
+    }
+  ],
   "baseattributes": {
     "record": [
       {
-        "name": "id",
+        "name": "tenant",
         "type": "string",
         "required": true
       },
@@ -50,79 +68,33 @@
         "name": "description",
         "type": "string",
         "required": false
-      },
-      {
-        "name": "created",
-        "type": "datetime",
-        "required": true
-      },
-      {
-        "name": "updated",
-        "type": "datetime",
-        "required": true
       }
     ]
   },
-  "processes": [
-    {
-      "name": "prepare",
-      "description": "Prepare Meeting",
-      "result": "meeting"
-    },
-    {
-      "name": "cancel",
-      "description": "Cancel Meeting",
-      "result": "meeting"
-    },
-    {
-      "name": "reschedule",
-      "description": "Reschedule Meeting",
-      "result": "meeting"
-    },
-    {
-      "name": "individualactions",
-      "description": "Individual Actions",
-      "sequence": [
-        {
-          "name": "accept",
-          "description": "Accept Invitation",
-          "result": "meeting"
-        },
-        {
-          "name": "decline",
-          "description": "Decline Invitation",
-          "result": "meeting"
-        },
-        {
-          "name": "propose",
-          "description": "Propose New Time",
-          "result": "meeting"
-        },
-        {
-          "name": "confirm",
-          "description": "Confirm Meeting",
-          "result": "meeting"
-        },
-        {
-          "name": "cancel",
-          "description": "Cancel Meeting",
-          "result": "meeting"
-        },
-        {
-          "name": "reschedule",
-          "description": "Reschedule Meeting",
-          "result": "meeting"
-        }
-      ]
-    }
-  ],
   "entities": {
+    "tenant": {
+      "name": "tenant",
+      "description": "User",
+      "baselineattributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "additionalattributes": null
+    },
     "user": {
       "name": "user",
       "description": "User",
       "baselineattributes": [
         {
-          "name": "id",
+          "name": "tenant",
           "type": "string",
           "required": true
         },
@@ -135,16 +107,6 @@
           "name": "description",
           "type": "string",
           "required": false
-        },
-        {
-          "name": "created",
-          "type": "datetime",
-          "required": true
-        },
-        {
-          "name": "updated",
-          "type": "datetime",
-          "required": true
         }
       ],
       "additionalattributes": [
@@ -155,13 +117,12 @@
         }
       ]
     },
-    "meetingroom": {
-      "name": "meetingroom",
-      "description": "Meeting Room",
-      "parent": "building",
+    "apikey": {
+      "name": "apikey",
+      "description": "API Key",
       "baselineattributes": [
         {
-          "name": "id",
+          "name": "tenant",
           "type": "string",
           "required": true
         },
@@ -174,38 +135,52 @@
           "name": "description",
           "type": "string",
           "required": false
-        },
-        {
-          "name": "created",
-          "type": "datetime",
-          "required": true
-        },
-        {
-          "name": "updated",
-          "type": "datetime",
-          "required": true
         }
       ],
       "additionalattributes": [
         {
-          "name": "email",
+          "name": "key",
           "type": "string",
           "required": true
         },
         {
-          "name": "capacity",
-          "type": "integer",
+          "name": "user",
+          "type": "reference",
+          "referenceto": "user",
+          "entity": {
+            "name": "user",
+            "description": "User",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "email",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
           "required": true
         },
         {
-          "name": "features",
-          "type": "array",
-          "required": false
-        },
-        {
-          "name": "floor",
-          "type": "reference",
-          "required": false
+          "name": "validto",
+          "type": "datetime",
+          "required": true
         }
       ]
     },
@@ -214,7 +189,7 @@
       "description": "Communication Channel",
       "baselineattributes": [
         {
-          "name": "id",
+          "name": "tenant",
           "type": "string",
           "required": true
         },
@@ -227,16 +202,6 @@
           "name": "description",
           "type": "string",
           "required": false
-        },
-        {
-          "name": "created",
-          "type": "datetime",
-          "required": true
-        },
-        {
-          "name": "updated",
-          "type": "datetime",
-          "required": true
         }
       ],
       "additionalattributes": [
@@ -257,7 +222,7 @@
       "description": "Message Templates",
       "baselineattributes": [
         {
-          "name": "id",
+          "name": "tenant",
           "type": "string",
           "required": true
         },
@@ -270,16 +235,6 @@
           "name": "description",
           "type": "string",
           "required": false
-        },
-        {
-          "name": "created",
-          "type": "datetime",
-          "required": true
-        },
-        {
-          "name": "updated",
-          "type": "datetime",
-          "required": true
         }
       ],
       "additionalattributes": [
@@ -295,122 +250,12 @@
         }
       ]
     },
-    "floor": {
-      "name": "floor",
-      "description": "Floor",
-      "baselineattributes": [
-        {
-          "name": "id",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "required": false
-        },
-        {
-          "name": "created",
-          "type": "datetime",
-          "required": true
-        },
-        {
-          "name": "updated",
-          "type": "datetime",
-          "required": true
-        }
-      ],
-      "parent": "building"
-    },
-    "building": {
-      "name": "building",
-      "description": "Building",
-      "parent": "site",
-      "baselineattributes": [
-        {
-          "name": "id",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "required": false
-        },
-        {
-          "name": "created",
-          "type": "datetime",
-          "required": true
-        },
-        {
-          "name": "updated",
-          "type": "datetime",
-          "required": true
-        }
-      ],
-      "additionalattributes": [
-        {
-          "name": "address",
-          "type": "string",
-          "required": true
-        }
-      ]
-    },
-    "site": {
-      "name": "site",
-      "description": "Site",
-      "parent": "country",
-      "baselineattributes": [
-        {
-          "name": "id",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "required": false
-        },
-        {
-          "name": "created",
-          "type": "datetime",
-          "required": true
-        },
-        {
-          "name": "updated",
-          "type": "datetime",
-          "required": true
-        }
-      ],
-      "additionalattributes": [
-        {
-          "name": "address",
-          "type": "string",
-          "required": true
-        }
-      ]
-    },
     "country": {
       "name": "country",
       "description": "Country",
       "baselineattributes": [
         {
-          "name": "id",
+          "name": "tenant",
           "type": "string",
           "required": true
         },
@@ -423,16 +268,6 @@
           "name": "description",
           "type": "string",
           "required": false
-        },
-        {
-          "name": "created",
-          "type": "datetime",
-          "required": true
-        },
-        {
-          "name": "updated",
-          "type": "datetime",
-          "required": true
         }
       ],
       "additionalattributes": [
@@ -443,12 +278,40 @@
         }
       ]
     },
-    "meeting": {
-      "name": "meeting",
-      "description": "Meeting",
+    "site": {
+      "name": "site",
+      "description": "Site",
+      "parent": {
+        "name": "country",
+        "description": "Country",
+        "baselineattributes": [
+          {
+            "name": "tenant",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "additionalattributes": [
+          {
+            "name": "code",
+            "type": "string",
+            "required": true
+          }
+        ]
+      },
       "baselineattributes": [
         {
-          "name": "id",
+          "name": "tenant",
           "type": "string",
           "required": true
         },
@@ -461,16 +324,1574 @@
           "name": "description",
           "type": "string",
           "required": false
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "address",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    "building": {
+      "name": "building",
+      "description": "Building",
+      "parent": {
+        "name": "site",
+        "description": "Site",
+        "parent": {
+          "name": "country",
+          "description": "Country",
+          "baselineattributes": [
+            {
+              "name": "tenant",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "code",
+              "type": "string",
+              "required": true
+            }
+          ]
+        },
+        "baselineattributes": [
+          {
+            "name": "tenant",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "additionalattributes": [
+          {
+            "name": "address",
+            "type": "string",
+            "required": true
+          }
+        ]
+      },
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "required": true
         },
         {
-          "name": "created",
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "address",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    "floor": {
+      "name": "floor",
+      "description": "Floor",
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "parent": {
+        "name": "building",
+        "description": "Building",
+        "parent": {
+          "name": "site",
+          "description": "Site",
+          "parent": {
+            "name": "country",
+            "description": "Country",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "code",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
+          "baselineattributes": [
+            {
+              "name": "tenant",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "address",
+              "type": "string",
+              "required": true
+            }
+          ]
+        },
+        "baselineattributes": [
+          {
+            "name": "tenant",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "additionalattributes": [
+          {
+            "name": "address",
+            "type": "string",
+            "required": true
+          }
+        ]
+      }
+    },
+    "meetingroom": {
+      "name": "meetingroom",
+      "description": "Meeting Room",
+      "parent": {
+        "name": "floor",
+        "description": "Floor",
+        "baselineattributes": [
+          {
+            "name": "tenant",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "parent": {
+          "name": "building",
+          "description": "Building",
+          "parent": {
+            "name": "site",
+            "description": "Site",
+            "parent": {
+              "name": "country",
+              "description": "Country",
+              "baselineattributes": [
+                {
+                  "name": "tenant",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false
+                }
+              ],
+              "additionalattributes": [
+                {
+                  "name": "code",
+                  "type": "string",
+                  "required": true
+                }
+              ]
+            },
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "address",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
+          "baselineattributes": [
+            {
+              "name": "tenant",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "address",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      },
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "capacity",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "name": "features",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    "account": {
+      "name": "account",
+      "description": "Account",
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "balance",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    "transaction": {
+      "name": "transaction",
+      "description": "Transaction",
+      "parent": {
+        "name": "account",
+        "description": "Account",
+        "baselineattributes": [
+          {
+            "name": "tenant",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "additionalattributes": [
+          {
+            "name": "balance",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "currency",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "required": true
+          }
+        ]
+      },
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "amount",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "datetime",
           "type": "datetime",
           "required": true
         },
         {
-          "name": "updated",
+          "name": "status",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    "servicecategory": {
+      "name": "servicecategory",
+      "description": "Service Category",
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    "service": {
+      "name": "service",
+      "description": "Service",
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "parent": {
+        "name": "servicecategory",
+        "description": "Service Category",
+        "baselineattributes": [
+          {
+            "name": "tenant",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          }
+        ]
+      },
+      "additionalattributes": [
+        {
+          "name": "price",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    "servicecatalogue": {
+      "name": "servicecatalogue",
+      "description": "Service Catalogue",
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "services",
+          "type": "array",
+          "entity": {
+            "name": "service",
+            "description": "Service",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "parent": {
+              "name": "servicecategory",
+              "description": "Service Category",
+              "baselineattributes": [
+                {
+                  "name": "tenant",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false
+                }
+              ]
+            },
+            "additionalattributes": [
+              {
+                "name": "price",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "currency",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
+          "required": false
+        }
+      ]
+    },
+    "vendor": {
+      "name": "vendor",
+      "description": "Vendor",
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "services",
+          "type": "array",
+          "entity": {
+            "name": "service",
+            "description": "Service",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "parent": {
+              "name": "servicecategory",
+              "description": "Service Category",
+              "baselineattributes": [
+                {
+                  "name": "tenant",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false
+                }
+              ]
+            },
+            "additionalattributes": [
+              {
+                "name": "price",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "currency",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
+          "required": false
+        }
+      ]
+    },
+    "serviceorder": {
+      "name": "serviceorder",
+      "description": "Service Order",
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "deliverydate",
+          "type": "datetime",
+          "required": false
+        },
+        {
+          "name": "deliverto",
+          "type": "reference",
+          "entity": {
+            "name": "user",
+            "description": "User",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "email",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
+          "required": false
+        },
+        {
+          "name": "services",
+          "type": "array",
+          "entity": {
+            "name": "service",
+            "description": "Service",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "parent": {
+              "name": "servicecategory",
+              "description": "Service Category",
+              "baselineattributes": [
+                {
+                  "name": "tenant",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false
+                }
+              ]
+            },
+            "additionalattributes": [
+              {
+                "name": "price",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "currency",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
+          "required": false
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "payment",
+          "type": "reference",
+          "entity": {
+            "name": "account",
+            "description": "Account",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "balance",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "currency",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "status",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
+          "referenceto": "account",
+          "required": false
+        }
+      ]
+    },
+    "task": {
+      "name": "task",
+      "description": "Task",
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "parent": "productionorder",
+      "additionalattributes": [
+        {
+          "name": "starttime",
           "type": "datetime",
           "required": true
+        },
+        {
+          "name": "location",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "responsible",
+          "type": "reference",
+          "entity": {
+            "name": "user",
+            "description": "User",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "email",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
+          "required": true
+        }
+      ]
+    },
+    "productionorder": {
+      "name": "productionorder",
+      "description": "Production Order",
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "deliverydate",
+          "type": "datetime",
+          "required": false
+        },
+        {
+          "name": "deliverto",
+          "type": "reference",
+          "entity": {
+            "name": "user",
+            "description": "User",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "email",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
+          "required": false
+        },
+        {
+          "name": "services",
+          "type": "array",
+          "entity": {
+            "name": "service",
+            "description": "Service",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "parent": {
+              "name": "servicecategory",
+              "description": "Service Category",
+              "baselineattributes": [
+                {
+                  "name": "tenant",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false
+                }
+              ]
+            },
+            "additionalattributes": [
+              {
+                "name": "price",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "currency",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
+          "required": false
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "payment",
+          "type": "reference",
+          "entity": {
+            "name": "account",
+            "description": "Account",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "balance",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "currency",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "status",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
+          "referenceto": "account",
+          "required": false
+        }
+      ]
+    },
+    "signal": {
+      "name": "signal",
+      "description": "Signal",
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "sender",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "receiver",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    "messageLog": {
+      "name": "messagelog",
+      "description": "Messagelog",
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "sender",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "receiver",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    "auditlog": {
+      "name": "auditlog",
+      "description": "Auditlog",
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "action",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "user",
+          "type": "reference",
+          "entity": {
+            "name": "user",
+            "description": "User",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "email",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
+          "referenceto": "user",
+          "required": true
+        },
+        {
+          "name": "entity",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "entityid",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "timestamp",
+          "type": "datetime",
+          "required": true
+        }
+      ]
+    },
+    "visitor": {
+      "name": "visitor",
+      "description": "Visitor",
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "phone",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "company",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "purpose",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "host",
+          "type": "reference",
+          "entity": {
+            "name": "user",
+            "description": "User",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "email",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
+          "referenceto": "user",
+          "required": true
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    "accesspoint": {
+      "name": "accesspoint",
+      "description": "Access Point",
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "location",
+          "type": "reference",
+          "entity": {
+            "name": "site",
+            "description": "Site",
+            "parent": {
+              "name": "country",
+              "description": "Country",
+              "baselineattributes": [
+                {
+                  "name": "tenant",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false
+                }
+              ],
+              "additionalattributes": [
+                {
+                  "name": "code",
+                  "type": "string",
+                  "required": true
+                }
+              ]
+            },
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "address",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
+          "required": true
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    "accesspass": {
+      "name": "accesspass",
+      "description": "Access Pass",
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "visitor",
+          "type": "reference",
+          "entity": {
+            "name": "visitor",
+            "description": "Visitor",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "email",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "phone",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "company",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "purpose",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "host",
+                "type": "reference",
+                "entity": {
+                  "name": "user",
+                  "description": "User",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ],
+                  "additionalattributes": [
+                    {
+                      "name": "email",
+                      "type": "string",
+                      "required": true
+                    }
+                  ]
+                },
+                "referenceto": "user",
+                "required": true
+              },
+              {
+                "name": "status",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
+          "referenceto": "visitor",
+          "required": true
+        },
+        {
+          "name": "validfrom",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "validto",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    "meeting": {
+      "name": "meeting",
+      "description": "Meeting",
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
         }
       ],
       "additionalattributes": [
@@ -480,43 +1901,212 @@
           "required": true
         },
         {
-          "name": "end",
-          "type": "datetime",
+          "name": "duration",
+          "type": "integer",
+          "description": "Duration in minutes",
           "required": true
         },
         {
           "name": "location",
-          "type": "reference",
+          "type": "string",
           "required": true
         },
         {
           "name": "organizer",
           "type": "reference",
+          "entity": {
+            "name": "user",
+            "description": "User",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "email",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
           "required": true
         },
         {
           "name": "participants",
           "type": "array",
+          "entity": {
+            "name": "user",
+            "description": "User",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "email",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
           "required": false
         },
         {
           "name": "guests",
           "type": "array",
+          "entity": {
+            "name": "user",
+            "description": "User",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "email",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
           "required": false
         },
         {
           "name": "viewers",
           "type": "array",
+          "entity": {
+            "name": "user",
+            "description": "User",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "email",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
           "required": false
         },
         {
           "name": "presenters",
           "type": "array",
+          "entity": {
+            "name": "user",
+            "description": "User",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "email",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
           "required": false
         },
         {
           "name": "hosts",
           "type": "array",
+          "entity": {
+            "name": "user",
+            "description": "User",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "email",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
           "required": false
         },
         {
@@ -527,6 +2117,175 @@
         {
           "name": "serviceorders",
           "type": "array",
+          "entity": {
+            "name": "serviceorder",
+            "description": "Service Order",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "deliverydate",
+                "type": "datetime",
+                "required": false
+              },
+              {
+                "name": "deliverto",
+                "type": "reference",
+                "entity": {
+                  "name": "user",
+                  "description": "User",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ],
+                  "additionalattributes": [
+                    {
+                      "name": "email",
+                      "type": "string",
+                      "required": true
+                    }
+                  ]
+                },
+                "required": false
+              },
+              {
+                "name": "services",
+                "type": "array",
+                "entity": {
+                  "name": "service",
+                  "description": "Service",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ],
+                  "parent": {
+                    "name": "servicecategory",
+                    "description": "Service Category",
+                    "baselineattributes": [
+                      {
+                        "name": "tenant",
+                        "type": "string",
+                        "required": true
+                      },
+                      {
+                        "name": "name",
+                        "type": "string",
+                        "required": true
+                      },
+                      {
+                        "name": "description",
+                        "type": "string",
+                        "required": false
+                      }
+                    ]
+                  },
+                  "additionalattributes": [
+                    {
+                      "name": "price",
+                      "type": "number",
+                      "required": true
+                    },
+                    {
+                      "name": "currency",
+                      "type": "string",
+                      "required": true
+                    }
+                  ]
+                },
+                "required": false
+              },
+              {
+                "name": "status",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "payment",
+                "type": "reference",
+                "entity": {
+                  "name": "account",
+                  "description": "Account",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ],
+                  "additionalattributes": [
+                    {
+                      "name": "balance",
+                      "type": "number",
+                      "required": true
+                    },
+                    {
+                      "name": "currency",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "status",
+                      "type": "string",
+                      "required": true
+                    }
+                  ]
+                },
+                "referenceto": "account",
+                "required": false
+              }
+            ]
+          },
           "required": false
         },
         {
@@ -550,380 +2309,9 @@
           "required": false
         }
       ]
-    },
-    "servicecategory": {
-      "name": "servicecategory",
-      "description": "Service Category",
-      "baselineattributes": [
-        {
-          "name": "id",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "required": false
-        },
-        {
-          "name": "created",
-          "type": "datetime",
-          "required": true
-        },
-        {
-          "name": "updated",
-          "type": "datetime",
-          "required": true
-        }
-      ]
-    },
-    "service": {
-      "name": "service",
-      "description": "Service",
-      "baselineattributes": [
-        {
-          "name": "id",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "required": false
-        },
-        {
-          "name": "created",
-          "type": "datetime",
-          "required": true
-        },
-        {
-          "name": "updated",
-          "type": "datetime",
-          "required": true
-        }
-      ],
-      "parent": "servicecategory",
-      "additionalattributes": [
-        {
-          "name": "price",
-          "type": "number",
-          "required": true
-        },
-        {
-          "name": "currency",
-          "type": "string",
-          "required": true
-        }
-      ]
-    },
-    "servicecatalogue": {
-      "name": "servicecatalogue",
-      "description": "Service Catalogue",
-      "baselineattributes": [
-        {
-          "name": "id",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "required": false
-        },
-        {
-          "name": "created",
-          "type": "datetime",
-          "required": true
-        },
-        {
-          "name": "updated",
-          "type": "datetime",
-          "required": true
-        }
-      ],
-      "additionalattributes": [
-        {
-          "name": "services",
-          "type": "array",
-          "required": false
-        }
-      ]
-    },
-    "vendor": {
-      "name": "vendor",
-      "description": "Vendor",
-      "baselineattributes": [
-        {
-          "name": "id",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "required": false
-        },
-        {
-          "name": "created",
-          "type": "datetime",
-          "required": true
-        },
-        {
-          "name": "updated",
-          "type": "datetime",
-          "required": true
-        }
-      ],
-      "additionalattributes": [
-        {
-          "name": "services",
-          "type": "array",
-          "required": false
-        }
-      ]
-    },
-    "serviceorder": {
-      "name": "serviceorder",
-      "description": "Service Order",
-      "baselineattributes": [
-        {
-          "name": "id",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "required": false
-        },
-        {
-          "name": "created",
-          "type": "datetime",
-          "required": true
-        },
-        {
-          "name": "updated",
-          "type": "datetime",
-          "required": true
-        }
-      ],
-      "additionalattributes": [
-        {
-          "name": "deliverydate",
-          "type": "datetime",
-          "required": false
-        },
-        {
-          "name": "deliverto",
-          "type": "reference",
-          "required": false
-        },
-        {
-          "name": "services",
-          "type": "array",
-          "required": false
-        },
-        {
-          "name": "status",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "payment",
-          "type": "reference",
-          "referenceto": "account",
-          "required": false
-        }
-      ]
-    },
-    "task": {
-      "name": "task",
-      "description": "Task",
-      "baselineattributes": [
-        {
-          "name": "id",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "required": false
-        },
-        {
-          "name": "created",
-          "type": "datetime",
-          "required": true
-        },
-        {
-          "name": "updated",
-          "type": "datetime",
-          "required": true
-        }
-      ],
-      "parent": "productionorder",
-      "additionalattributes": [
-        {
-          "name": "start",
-          "type": "datetime",
-          "required": true
-        },
-        {
-          "name": "end",
-          "type": "datetime",
-          "required": true
-        },
-        {
-          "name": "location",
-          "type": "reference",
-          "required": true
-        }
-      ]
-    },
-    "productionorder": {
-      "name": "productionorder",
-      "description": "Production Order",
-      "baselineattributes": [
-        {
-          "name": "id",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "required": false
-        },
-        {
-          "name": "created",
-          "type": "datetime",
-          "required": true
-        },
-        {
-          "name": "updated",
-          "type": "datetime",
-          "required": true
-        }
-      ],
-      "additionalattributes": [
-        {
-          "name": "deliverydate",
-          "type": "datetime",
-          "required": false
-        },
-        {
-          "name": "deliverto",
-          "type": "reference",
-          "required": false
-        },
-        {
-          "name": "services",
-          "type": "array",
-          "required": false
-        },
-        {
-          "name": "status",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "payment",
-          "type": "reference",
-          "referenceto": "account",
-          "required": false
-        }
-      ]
-    },
-    "account": {
-      "name": "account",
-      "description": "Account",
-      "baselineattributes": [
-        {
-          "name": "id",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "required": false
-        },
-        {
-          "name": "created",
-          "type": "datetime",
-          "required": true
-        },
-        {
-          "name": "updated",
-          "type": "datetime",
-          "required": true
-        }
-      ],
-      "additionalattributes": [
-        {
-          "name": "balance",
-          "type": "number",
-          "required": true
-        },
-        {
-          "name": "currency",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "transactions",
-          "type": "array",
-          "required": false
-        },
-        {
-          "name": "status",
-          "type": "string",
-          "required": true
-        }
-      ]
     }
   },
-  "models": {
+  "methods": {
     "itemMethods": [
       {
         "name": "read",
@@ -1004,6 +2392,108 @@
   },
   "services": [
     {
+      "name": "tenant",
+      "entity": {
+        "type": "record",
+        "model": "tenant",
+        "objectname": "Tenant",
+        "entity": {
+          "name": "tenant",
+          "description": "User",
+          "baselineattributes": [
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            }
+          ],
+          "additionalattributes": null
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
       "name": "user",
       "entity": {
         "type": "record",
@@ -1014,7 +2504,7 @@
           "description": "User",
           "baselineattributes": [
             {
-              "name": "id",
+              "name": "tenant",
               "type": "string",
               "required": true
             },
@@ -1027,16 +2517,6 @@
               "name": "description",
               "type": "string",
               "required": false
-            },
-            {
-              "name": "created",
-              "type": "datetime",
-              "required": true
-            },
-            {
-              "name": "updated",
-              "type": "datetime",
-              "required": true
             }
           ],
           "additionalattributes": [
@@ -1137,7 +2617,7 @@
           "description": "Meeting",
           "baselineattributes": [
             {
-              "name": "id",
+              "name": "tenant",
               "type": "string",
               "required": true
             },
@@ -1150,16 +2630,6 @@
               "name": "description",
               "type": "string",
               "required": false
-            },
-            {
-              "name": "created",
-              "type": "datetime",
-              "required": true
-            },
-            {
-              "name": "updated",
-              "type": "datetime",
-              "required": true
             }
           ],
           "additionalattributes": [
@@ -1169,43 +2639,212 @@
               "required": true
             },
             {
-              "name": "end",
-              "type": "datetime",
+              "name": "duration",
+              "type": "integer",
+              "description": "Duration in minutes",
               "required": true
             },
             {
               "name": "location",
-              "type": "reference",
+              "type": "string",
               "required": true
             },
             {
               "name": "organizer",
               "type": "reference",
+              "entity": {
+                "name": "user",
+                "description": "User",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "additionalattributes": [
+                  {
+                    "name": "email",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
               "required": true
             },
             {
               "name": "participants",
               "type": "array",
+              "entity": {
+                "name": "user",
+                "description": "User",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "additionalattributes": [
+                  {
+                    "name": "email",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
               "required": false
             },
             {
               "name": "guests",
               "type": "array",
+              "entity": {
+                "name": "user",
+                "description": "User",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "additionalattributes": [
+                  {
+                    "name": "email",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
               "required": false
             },
             {
               "name": "viewers",
               "type": "array",
+              "entity": {
+                "name": "user",
+                "description": "User",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "additionalattributes": [
+                  {
+                    "name": "email",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
               "required": false
             },
             {
               "name": "presenters",
               "type": "array",
+              "entity": {
+                "name": "user",
+                "description": "User",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "additionalattributes": [
+                  {
+                    "name": "email",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
               "required": false
             },
             {
               "name": "hosts",
               "type": "array",
+              "entity": {
+                "name": "user",
+                "description": "User",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "additionalattributes": [
+                  {
+                    "name": "email",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
               "required": false
             },
             {
@@ -1216,6 +2855,175 @@
             {
               "name": "serviceorders",
               "type": "array",
+              "entity": {
+                "name": "serviceorder",
+                "description": "Service Order",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "additionalattributes": [
+                  {
+                    "name": "deliverydate",
+                    "type": "datetime",
+                    "required": false
+                  },
+                  {
+                    "name": "deliverto",
+                    "type": "reference",
+                    "entity": {
+                      "name": "user",
+                      "description": "User",
+                      "baselineattributes": [
+                        {
+                          "name": "tenant",
+                          "type": "string",
+                          "required": true
+                        },
+                        {
+                          "name": "name",
+                          "type": "string",
+                          "required": true
+                        },
+                        {
+                          "name": "description",
+                          "type": "string",
+                          "required": false
+                        }
+                      ],
+                      "additionalattributes": [
+                        {
+                          "name": "email",
+                          "type": "string",
+                          "required": true
+                        }
+                      ]
+                    },
+                    "required": false
+                  },
+                  {
+                    "name": "services",
+                    "type": "array",
+                    "entity": {
+                      "name": "service",
+                      "description": "Service",
+                      "baselineattributes": [
+                        {
+                          "name": "tenant",
+                          "type": "string",
+                          "required": true
+                        },
+                        {
+                          "name": "name",
+                          "type": "string",
+                          "required": true
+                        },
+                        {
+                          "name": "description",
+                          "type": "string",
+                          "required": false
+                        }
+                      ],
+                      "parent": {
+                        "name": "servicecategory",
+                        "description": "Service Category",
+                        "baselineattributes": [
+                          {
+                            "name": "tenant",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "name",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "description",
+                            "type": "string",
+                            "required": false
+                          }
+                        ]
+                      },
+                      "additionalattributes": [
+                        {
+                          "name": "price",
+                          "type": "number",
+                          "required": true
+                        },
+                        {
+                          "name": "currency",
+                          "type": "string",
+                          "required": true
+                        }
+                      ]
+                    },
+                    "required": false
+                  },
+                  {
+                    "name": "status",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "payment",
+                    "type": "reference",
+                    "entity": {
+                      "name": "account",
+                      "description": "Account",
+                      "baselineattributes": [
+                        {
+                          "name": "tenant",
+                          "type": "string",
+                          "required": true
+                        },
+                        {
+                          "name": "name",
+                          "type": "string",
+                          "required": true
+                        },
+                        {
+                          "name": "description",
+                          "type": "string",
+                          "required": false
+                        }
+                      ],
+                      "additionalattributes": [
+                        {
+                          "name": "balance",
+                          "type": "number",
+                          "required": true
+                        },
+                        {
+                          "name": "currency",
+                          "type": "string",
+                          "required": true
+                        },
+                        {
+                          "name": "status",
+                          "type": "string",
+                          "required": true
+                        }
+                      ]
+                    },
+                    "referenceto": "account",
+                    "required": false
+                  }
+                ]
+              },
               "required": false
             },
             {
@@ -1320,150 +3128,6 @@
       ]
     },
     {
-      "name": "serviceorder",
-      "entity": {
-        "type": "record",
-        "model": "meeting",
-        "objectname": "Meeting",
-        "entity": {
-          "name": "serviceorder",
-          "description": "Service Order",
-          "baselineattributes": [
-            {
-              "name": "id",
-              "type": "string",
-              "required": true
-            },
-            {
-              "name": "name",
-              "type": "string",
-              "required": true
-            },
-            {
-              "name": "description",
-              "type": "string",
-              "required": false
-            },
-            {
-              "name": "created",
-              "type": "datetime",
-              "required": true
-            },
-            {
-              "name": "updated",
-              "type": "datetime",
-              "required": true
-            }
-          ],
-          "additionalattributes": [
-            {
-              "name": "deliverydate",
-              "type": "datetime",
-              "required": false
-            },
-            {
-              "name": "deliverto",
-              "type": "reference",
-              "required": false
-            },
-            {
-              "name": "services",
-              "type": "array",
-              "required": false
-            },
-            {
-              "name": "status",
-              "type": "string",
-              "required": true
-            },
-            {
-              "name": "payment",
-              "type": "reference",
-              "referenceto": "account",
-              "required": false
-            }
-          ]
-        }
-      },
-      "methods": [
-        {
-          "name": "read",
-          "description": "Read a single item",
-          "parameters": [
-            {
-              "name": "id",
-              "description": "The id of the item",
-              "type": "string",
-              "required": true
-            }
-          ],
-          "returns": {
-            "type": "object"
-          }
-        },
-        {
-          "name": "create",
-          "description": "Create a new item",
-          "parameters": [
-            {
-              "name": "item",
-              "description": "The item to create",
-              "type": "object",
-              "required": true
-            }
-          ],
-          "returns": {
-            "type": "object"
-          }
-        },
-        {
-          "name": "update",
-          "description": "Update an existing item",
-          "parameters": [
-            {
-              "name": "item",
-              "description": "The item to update",
-              "type": "object",
-              "required": true
-            }
-          ],
-          "returns": {
-            "type": "object"
-          }
-        },
-        {
-          "name": "delete",
-          "description": "Delete an existing item",
-          "parameters": [
-            {
-              "name": "id",
-              "description": "The id of the item",
-              "type": "string",
-              "required": true
-            }
-          ],
-          "returns": {
-            "type": "void"
-          }
-        },
-        {
-          "name": "search",
-          "description": "Search for items",
-          "parameters": [
-            {
-              "name": "query",
-              "description": "The search query",
-              "type": "string",
-              "required": true
-            }
-          ],
-          "returns": {
-            "type": "page"
-          }
-        }
-      ]
-    },
-    {
       "name": "service",
       "entity": {
         "type": "record",
@@ -1474,7 +3138,7 @@
           "description": "Service",
           "baselineattributes": [
             {
-              "name": "id",
+              "name": "tenant",
               "type": "string",
               "required": true
             },
@@ -1487,19 +3151,29 @@
               "name": "description",
               "type": "string",
               "required": false
-            },
-            {
-              "name": "created",
-              "type": "datetime",
-              "required": true
-            },
-            {
-              "name": "updated",
-              "type": "datetime",
-              "required": true
             }
           ],
-          "parent": "servicecategory",
+          "parent": {
+            "name": "servicecategory",
+            "description": "Service Category",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ]
+          },
           "additionalattributes": [
             {
               "name": "price",
@@ -1603,7 +3277,7 @@
           "description": "Service Catalogue",
           "baselineattributes": [
             {
-              "name": "id",
+              "name": "tenant",
               "type": "string",
               "required": true
             },
@@ -1616,22 +3290,66 @@
               "name": "description",
               "type": "string",
               "required": false
-            },
-            {
-              "name": "created",
-              "type": "datetime",
-              "required": true
-            },
-            {
-              "name": "updated",
-              "type": "datetime",
-              "required": true
             }
           ],
           "additionalattributes": [
             {
               "name": "services",
               "type": "array",
+              "entity": {
+                "name": "service",
+                "description": "Service",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "parent": {
+                  "name": "servicecategory",
+                  "description": "Service Category",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ]
+                },
+                "additionalattributes": [
+                  {
+                    "name": "price",
+                    "type": "number",
+                    "required": true
+                  },
+                  {
+                    "name": "currency",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
               "required": false
             }
           ]
@@ -1726,7 +3444,7 @@
           "description": "Vendor",
           "baselineattributes": [
             {
-              "name": "id",
+              "name": "tenant",
               "type": "string",
               "required": true
             },
@@ -1739,22 +3457,66 @@
               "name": "description",
               "type": "string",
               "required": false
-            },
-            {
-              "name": "created",
-              "type": "datetime",
-              "required": true
-            },
-            {
-              "name": "updated",
-              "type": "datetime",
-              "required": true
             }
           ],
           "additionalattributes": [
             {
               "name": "services",
               "type": "array",
+              "entity": {
+                "name": "service",
+                "description": "Service",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "parent": {
+                  "name": "servicecategory",
+                  "description": "Service Category",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ]
+                },
+                "additionalattributes": [
+                  {
+                    "name": "price",
+                    "type": "number",
+                    "required": true
+                  },
+                  {
+                    "name": "currency",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
               "required": false
             }
           ]
@@ -1849,7 +3611,7 @@
           "description": "Service Category",
           "baselineattributes": [
             {
-              "name": "id",
+              "name": "tenant",
               "type": "string",
               "required": true
             },
@@ -1862,16 +3624,6 @@
               "name": "description",
               "type": "string",
               "required": false
-            },
-            {
-              "name": "created",
-              "type": "datetime",
-              "required": true
-            },
-            {
-              "name": "updated",
-              "type": "datetime",
-              "required": true
             }
           ]
         }
@@ -1965,7 +3717,7 @@
           "description": "Service Order",
           "baselineattributes": [
             {
-              "name": "id",
+              "name": "tenant",
               "type": "string",
               "required": true
             },
@@ -1978,16 +3730,6 @@
               "name": "description",
               "type": "string",
               "required": false
-            },
-            {
-              "name": "created",
-              "type": "datetime",
-              "required": true
-            },
-            {
-              "name": "updated",
-              "type": "datetime",
-              "required": true
             }
           ],
           "additionalattributes": [
@@ -1999,11 +3741,93 @@
             {
               "name": "deliverto",
               "type": "reference",
+              "entity": {
+                "name": "user",
+                "description": "User",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "additionalattributes": [
+                  {
+                    "name": "email",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
               "required": false
             },
             {
               "name": "services",
               "type": "array",
+              "entity": {
+                "name": "service",
+                "description": "Service",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "parent": {
+                  "name": "servicecategory",
+                  "description": "Service Category",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ]
+                },
+                "additionalattributes": [
+                  {
+                    "name": "price",
+                    "type": "number",
+                    "required": true
+                  },
+                  {
+                    "name": "currency",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
               "required": false
             },
             {
@@ -2014,6 +3838,44 @@
             {
               "name": "payment",
               "type": "reference",
+              "entity": {
+                "name": "account",
+                "description": "Account",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "additionalattributes": [
+                  {
+                    "name": "balance",
+                    "type": "number",
+                    "required": true
+                  },
+                  {
+                    "name": "currency",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "status",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
               "referenceto": "account",
               "required": false
             }
@@ -2109,7 +3971,7 @@
           "description": "Task",
           "baselineattributes": [
             {
-              "name": "id",
+              "name": "tenant",
               "type": "string",
               "required": true
             },
@@ -2122,33 +3984,51 @@
               "name": "description",
               "type": "string",
               "required": false
-            },
-            {
-              "name": "created",
-              "type": "datetime",
-              "required": true
-            },
-            {
-              "name": "updated",
-              "type": "datetime",
-              "required": true
             }
           ],
           "parent": "productionorder",
           "additionalattributes": [
             {
-              "name": "start",
-              "type": "datetime",
-              "required": true
-            },
-            {
-              "name": "end",
+              "name": "starttime",
               "type": "datetime",
               "required": true
             },
             {
               "name": "location",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "responsible",
               "type": "reference",
+              "entity": {
+                "name": "user",
+                "description": "User",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "additionalattributes": [
+                  {
+                    "name": "email",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
               "required": true
             }
           ]
@@ -2243,7 +4123,7 @@
           "description": "Production Order",
           "baselineattributes": [
             {
-              "name": "id",
+              "name": "tenant",
               "type": "string",
               "required": true
             },
@@ -2256,16 +4136,6 @@
               "name": "description",
               "type": "string",
               "required": false
-            },
-            {
-              "name": "created",
-              "type": "datetime",
-              "required": true
-            },
-            {
-              "name": "updated",
-              "type": "datetime",
-              "required": true
             }
           ],
           "additionalattributes": [
@@ -2277,11 +4147,93 @@
             {
               "name": "deliverto",
               "type": "reference",
+              "entity": {
+                "name": "user",
+                "description": "User",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "additionalattributes": [
+                  {
+                    "name": "email",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
               "required": false
             },
             {
               "name": "services",
               "type": "array",
+              "entity": {
+                "name": "service",
+                "description": "Service",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "parent": {
+                  "name": "servicecategory",
+                  "description": "Service Category",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ]
+                },
+                "additionalattributes": [
+                  {
+                    "name": "price",
+                    "type": "number",
+                    "required": true
+                  },
+                  {
+                    "name": "currency",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
               "required": false
             },
             {
@@ -2292,6 +4244,44 @@
             {
               "name": "payment",
               "type": "reference",
+              "entity": {
+                "name": "account",
+                "description": "Account",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "additionalattributes": [
+                  {
+                    "name": "balance",
+                    "type": "number",
+                    "required": true
+                  },
+                  {
+                    "name": "currency",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "status",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
               "referenceto": "account",
               "required": false
             }
@@ -2387,7 +4377,7 @@
           "description": "Account",
           "baselineattributes": [
             {
-              "name": "id",
+              "name": "tenant",
               "type": "string",
               "required": true
             },
@@ -2400,16 +4390,6 @@
               "name": "description",
               "type": "string",
               "required": false
-            },
-            {
-              "name": "created",
-              "type": "datetime",
-              "required": true
-            },
-            {
-              "name": "updated",
-              "type": "datetime",
-              "required": true
             }
           ],
           "additionalattributes": [
@@ -2422,11 +4402,6 @@
               "name": "currency",
               "type": "string",
               "required": true
-            },
-            {
-              "name": "transactions",
-              "type": "array",
-              "required": false
             },
             {
               "name": "status",
@@ -2523,10 +4498,65 @@
         "entity": {
           "name": "building",
           "description": "Building",
-          "parent": "site",
+          "parent": {
+            "name": "site",
+            "description": "Site",
+            "parent": {
+              "name": "country",
+              "description": "Country",
+              "baselineattributes": [
+                {
+                  "name": "tenant",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false
+                }
+              ],
+              "additionalattributes": [
+                {
+                  "name": "code",
+                  "type": "string",
+                  "required": true
+                }
+              ]
+            },
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "address",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
           "baselineattributes": [
             {
-              "name": "id",
+              "name": "tenant",
               "type": "string",
               "required": true
             },
@@ -2539,16 +4569,6 @@
               "name": "description",
               "type": "string",
               "required": false
-            },
-            {
-              "name": "created",
-              "type": "datetime",
-              "required": true
-            },
-            {
-              "name": "updated",
-              "type": "datetime",
-              "required": true
             }
           ],
           "additionalattributes": [
@@ -2647,10 +4667,37 @@
         "entity": {
           "name": "site",
           "description": "Site",
-          "parent": "country",
+          "parent": {
+            "name": "country",
+            "description": "Country",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "code",
+                "type": "string",
+                "required": true
+              }
+            ]
+          },
           "baselineattributes": [
             {
-              "name": "id",
+              "name": "tenant",
               "type": "string",
               "required": true
             },
@@ -2663,16 +4710,6 @@
               "name": "description",
               "type": "string",
               "required": false
-            },
-            {
-              "name": "created",
-              "type": "datetime",
-              "required": true
-            },
-            {
-              "name": "updated",
-              "type": "datetime",
-              "required": true
             }
           ],
           "additionalattributes": [
@@ -2773,7 +4810,7 @@
           "description": "Country",
           "baselineattributes": [
             {
-              "name": "id",
+              "name": "tenant",
               "type": "string",
               "required": true
             },
@@ -2786,16 +4823,6 @@
               "name": "description",
               "type": "string",
               "required": false
-            },
-            {
-              "name": "created",
-              "type": "datetime",
-              "required": true
-            },
-            {
-              "name": "updated",
-              "type": "datetime",
-              "required": true
             }
           ],
           "additionalattributes": [
@@ -2896,7 +4923,7 @@
           "description": "Floor",
           "baselineattributes": [
             {
-              "name": "id",
+              "name": "tenant",
               "type": "string",
               "required": true
             },
@@ -2909,19 +4936,92 @@
               "name": "description",
               "type": "string",
               "required": false
-            },
-            {
-              "name": "created",
-              "type": "datetime",
-              "required": true
-            },
-            {
-              "name": "updated",
-              "type": "datetime",
-              "required": true
             }
           ],
-          "parent": "building"
+          "parent": {
+            "name": "building",
+            "description": "Building",
+            "parent": {
+              "name": "site",
+              "description": "Site",
+              "parent": {
+                "name": "country",
+                "description": "Country",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "additionalattributes": [
+                  {
+                    "name": "code",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
+              "baselineattributes": [
+                {
+                  "name": "tenant",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false
+                }
+              ],
+              "additionalattributes": [
+                {
+                  "name": "address",
+                  "type": "string",
+                  "required": true
+                }
+              ]
+            },
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "address",
+                "type": "string",
+                "required": true
+              }
+            ]
+          }
         }
       },
       "methods": [
@@ -3011,10 +5111,114 @@
         "entity": {
           "name": "meetingroom",
           "description": "Meeting Room",
-          "parent": "building",
+          "parent": {
+            "name": "floor",
+            "description": "Floor",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "parent": {
+              "name": "building",
+              "description": "Building",
+              "parent": {
+                "name": "site",
+                "description": "Site",
+                "parent": {
+                  "name": "country",
+                  "description": "Country",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ],
+                  "additionalattributes": [
+                    {
+                      "name": "code",
+                      "type": "string",
+                      "required": true
+                    }
+                  ]
+                },
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "additionalattributes": [
+                  {
+                    "name": "address",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
+              "baselineattributes": [
+                {
+                  "name": "tenant",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false
+                }
+              ],
+              "additionalattributes": [
+                {
+                  "name": "address",
+                  "type": "string",
+                  "required": true
+                }
+              ]
+            }
+          },
           "baselineattributes": [
             {
-              "name": "id",
+              "name": "tenant",
               "type": "string",
               "required": true
             },
@@ -3027,16 +5231,6 @@
               "name": "description",
               "type": "string",
               "required": false
-            },
-            {
-              "name": "created",
-              "type": "datetime",
-              "required": true
-            },
-            {
-              "name": "updated",
-              "type": "datetime",
-              "required": true
             }
           ],
           "additionalattributes": [
@@ -3052,12 +5246,7 @@
             },
             {
               "name": "features",
-              "type": "array",
-              "required": false
-            },
-            {
-              "name": "floor",
-              "type": "reference",
+              "type": "string",
               "required": false
             }
           ]
@@ -3152,7 +5341,7 @@
           "description": "Communication Channel",
           "baselineattributes": [
             {
-              "name": "id",
+              "name": "tenant",
               "type": "string",
               "required": true
             },
@@ -3165,16 +5354,6 @@
               "name": "description",
               "type": "string",
               "required": false
-            },
-            {
-              "name": "created",
-              "type": "datetime",
-              "required": true
-            },
-            {
-              "name": "updated",
-              "type": "datetime",
-              "required": true
             }
           ],
           "additionalattributes": [
@@ -3280,7 +5459,7 @@
           "description": "Message Templates",
           "baselineattributes": [
             {
-              "name": "id",
+              "name": "tenant",
               "type": "string",
               "required": true
             },
@@ -3293,16 +5472,6 @@
               "name": "description",
               "type": "string",
               "required": false
-            },
-            {
-              "name": "created",
-              "type": "datetime",
-              "required": true
-            },
-            {
-              "name": "updated",
-              "type": "datetime",
-              "required": true
             }
           ],
           "additionalattributes": [
@@ -3394,6 +5563,2098 @@
           "returns": {
             "type": "page"
           }
+        }
+      ]
+    },
+    {
+      "name": "signal",
+      "entity": {
+        "type": "record",
+        "model": "signal",
+        "objectname": "Signal",
+        "entity": {
+          "name": "signal",
+          "description": "Signal",
+          "baselineattributes": [
+            {
+              "name": "tenant",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "sender",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "receiver",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "messagelog",
+      "entity": {
+        "type": "record",
+        "model": "messagelog",
+        "objectname": "Messagelog",
+        "entity": {
+          "name": "messagelog",
+          "description": "Messagelog",
+          "baselineattributes": [
+            {
+              "name": "tenant",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "sender",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "receiver",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "message",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "auditlog",
+      "entity": {
+        "type": "record",
+        "model": "auditlog",
+        "objectname": "Auditlog",
+        "entity": {
+          "name": "auditlog",
+          "description": "Auditlog",
+          "baselineattributes": [
+            {
+              "name": "tenant",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "action",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "user",
+              "type": "reference",
+              "entity": {
+                "name": "user",
+                "description": "User",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "additionalattributes": [
+                  {
+                    "name": "email",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
+              "referenceto": "user",
+              "required": true
+            },
+            {
+              "name": "entity",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "entityid",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "timestamp",
+              "type": "datetime",
+              "required": true
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "visitor",
+      "entity": {
+        "type": "record",
+        "model": "visitor",
+        "objectname": "Visitor",
+        "entity": {
+          "name": "visitor",
+          "description": "Visitor",
+          "baselineattributes": [
+            {
+              "name": "tenant",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "email",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "phone",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "company",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "purpose",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "host",
+              "type": "reference",
+              "entity": {
+                "name": "user",
+                "description": "User",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "additionalattributes": [
+                  {
+                    "name": "email",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
+              "referenceto": "user",
+              "required": true
+            },
+            {
+              "name": "status",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "accesspass",
+      "entity": {
+        "type": "record",
+        "model": "accesspass",
+        "objectname": "Accesspass",
+        "entity": {
+          "name": "accesspass",
+          "description": "Access Pass",
+          "baselineattributes": [
+            {
+              "name": "tenant",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "visitor",
+              "type": "reference",
+              "entity": {
+                "name": "visitor",
+                "description": "Visitor",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "additionalattributes": [
+                  {
+                    "name": "email",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "phone",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "company",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "purpose",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "host",
+                    "type": "reference",
+                    "entity": {
+                      "name": "user",
+                      "description": "User",
+                      "baselineattributes": [
+                        {
+                          "name": "tenant",
+                          "type": "string",
+                          "required": true
+                        },
+                        {
+                          "name": "name",
+                          "type": "string",
+                          "required": true
+                        },
+                        {
+                          "name": "description",
+                          "type": "string",
+                          "required": false
+                        }
+                      ],
+                      "additionalattributes": [
+                        {
+                          "name": "email",
+                          "type": "string",
+                          "required": true
+                        }
+                      ]
+                    },
+                    "referenceto": "user",
+                    "required": true
+                  },
+                  {
+                    "name": "status",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
+              "referenceto": "visitor",
+              "required": true
+            },
+            {
+              "name": "validfrom",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "validto",
+              "type": "datetime",
+              "required": true
+            },
+            {
+              "name": "status",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "accesspoint",
+      "entity": {
+        "type": "record",
+        "model": "accesspoint",
+        "objectname": "Accesspoint",
+        "entity": {
+          "name": "accesspoint",
+          "description": "Access Point",
+          "baselineattributes": [
+            {
+              "name": "tenant",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "location",
+              "type": "reference",
+              "entity": {
+                "name": "site",
+                "description": "Site",
+                "parent": {
+                  "name": "country",
+                  "description": "Country",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ],
+                  "additionalattributes": [
+                    {
+                      "name": "code",
+                      "type": "string",
+                      "required": true
+                    }
+                  ]
+                },
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "additionalattributes": [
+                  {
+                    "name": "address",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
+              "required": true
+            },
+            {
+              "name": "status",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "apikey",
+      "entity": {
+        "role": "admin",
+        "type": "record",
+        "model": "apikey",
+        "objectname": "Apikey",
+        "entity": {
+          "name": "apikey",
+          "description": "API Key",
+          "baselineattributes": [
+            {
+              "name": "tenant",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "key",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "user",
+              "type": "reference",
+              "referenceto": "user",
+              "entity": {
+                "name": "user",
+                "description": "User",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "additionalattributes": [
+                  {
+                    "name": "email",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              },
+              "required": true
+            },
+            {
+              "name": "validto",
+              "type": "datetime",
+              "required": true
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    }
+  ],
+  "processes": [
+    {
+      "stage": "preperation",
+      "substages": [
+        {
+          "name": "prepare",
+          "description": "Prepare Meeting",
+          "entity": {
+            "name": "meeting",
+            "description": "Meeting",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "start",
+                "type": "datetime",
+                "required": true
+              },
+              {
+                "name": "duration",
+                "type": "integer",
+                "description": "Duration in minutes",
+                "required": true
+              },
+              {
+                "name": "location",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "organizer",
+                "type": "reference",
+                "entity": {
+                  "name": "user",
+                  "description": "User",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ],
+                  "additionalattributes": [
+                    {
+                      "name": "email",
+                      "type": "string",
+                      "required": true
+                    }
+                  ]
+                },
+                "required": true
+              },
+              {
+                "name": "participants",
+                "type": "array",
+                "entity": {
+                  "name": "user",
+                  "description": "User",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ],
+                  "additionalattributes": [
+                    {
+                      "name": "email",
+                      "type": "string",
+                      "required": true
+                    }
+                  ]
+                },
+                "required": false
+              },
+              {
+                "name": "guests",
+                "type": "array",
+                "entity": {
+                  "name": "user",
+                  "description": "User",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ],
+                  "additionalattributes": [
+                    {
+                      "name": "email",
+                      "type": "string",
+                      "required": true
+                    }
+                  ]
+                },
+                "required": false
+              },
+              {
+                "name": "viewers",
+                "type": "array",
+                "entity": {
+                  "name": "user",
+                  "description": "User",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ],
+                  "additionalattributes": [
+                    {
+                      "name": "email",
+                      "type": "string",
+                      "required": true
+                    }
+                  ]
+                },
+                "required": false
+              },
+              {
+                "name": "presenters",
+                "type": "array",
+                "entity": {
+                  "name": "user",
+                  "description": "User",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ],
+                  "additionalattributes": [
+                    {
+                      "name": "email",
+                      "type": "string",
+                      "required": true
+                    }
+                  ]
+                },
+                "required": false
+              },
+              {
+                "name": "hosts",
+                "type": "array",
+                "entity": {
+                  "name": "user",
+                  "description": "User",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ],
+                  "additionalattributes": [
+                    {
+                      "name": "email",
+                      "type": "string",
+                      "required": true
+                    }
+                  ]
+                },
+                "required": false
+              },
+              {
+                "name": "status",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "serviceorders",
+                "type": "array",
+                "entity": {
+                  "name": "serviceorder",
+                  "description": "Service Order",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ],
+                  "additionalattributes": [
+                    {
+                      "name": "deliverydate",
+                      "type": "datetime",
+                      "required": false
+                    },
+                    {
+                      "name": "deliverto",
+                      "type": "reference",
+                      "entity": {
+                        "name": "user",
+                        "description": "User",
+                        "baselineattributes": [
+                          {
+                            "name": "tenant",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "name",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "description",
+                            "type": "string",
+                            "required": false
+                          }
+                        ],
+                        "additionalattributes": [
+                          {
+                            "name": "email",
+                            "type": "string",
+                            "required": true
+                          }
+                        ]
+                      },
+                      "required": false
+                    },
+                    {
+                      "name": "services",
+                      "type": "array",
+                      "entity": {
+                        "name": "service",
+                        "description": "Service",
+                        "baselineattributes": [
+                          {
+                            "name": "tenant",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "name",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "description",
+                            "type": "string",
+                            "required": false
+                          }
+                        ],
+                        "parent": {
+                          "name": "servicecategory",
+                          "description": "Service Category",
+                          "baselineattributes": [
+                            {
+                              "name": "tenant",
+                              "type": "string",
+                              "required": true
+                            },
+                            {
+                              "name": "name",
+                              "type": "string",
+                              "required": true
+                            },
+                            {
+                              "name": "description",
+                              "type": "string",
+                              "required": false
+                            }
+                          ]
+                        },
+                        "additionalattributes": [
+                          {
+                            "name": "price",
+                            "type": "number",
+                            "required": true
+                          },
+                          {
+                            "name": "currency",
+                            "type": "string",
+                            "required": true
+                          }
+                        ]
+                      },
+                      "required": false
+                    },
+                    {
+                      "name": "status",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "payment",
+                      "type": "reference",
+                      "entity": {
+                        "name": "account",
+                        "description": "Account",
+                        "baselineattributes": [
+                          {
+                            "name": "tenant",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "name",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "description",
+                            "type": "string",
+                            "required": false
+                          }
+                        ],
+                        "additionalattributes": [
+                          {
+                            "name": "balance",
+                            "type": "number",
+                            "required": true
+                          },
+                          {
+                            "name": "currency",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "status",
+                            "type": "string",
+                            "required": true
+                          }
+                        ]
+                      },
+                      "referenceto": "account",
+                      "required": false
+                    }
+                  ]
+                },
+                "required": false
+              },
+              {
+                "name": "exchangereference",
+                "type": "string",
+                "required": false
+              },
+              {
+                "name": "exchangestatus",
+                "type": "string",
+                "required": false
+              },
+              {
+                "name": "teamsreference",
+                "type": "string",
+                "required": false
+              },
+              {
+                "name": "teamsstatus",
+                "type": "string",
+                "required": false
+              }
+            ]
+          },
+          "state": "draft"
+        },
+        {
+          "name": "cancel",
+          "description": "Cancel Meeting",
+          "trigger": "meetingcancellationrequest",
+          "result": "cancelledmeeting",
+          "entity": {
+            "name": "meeting",
+            "description": "Meeting",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "start",
+                "type": "datetime",
+                "required": true
+              },
+              {
+                "name": "duration",
+                "type": "integer",
+                "description": "Duration in minutes",
+                "required": true
+              },
+              {
+                "name": "location",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "organizer",
+                "type": "reference",
+                "entity": {
+                  "name": "user",
+                  "description": "User",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ],
+                  "additionalattributes": [
+                    {
+                      "name": "email",
+                      "type": "string",
+                      "required": true
+                    }
+                  ]
+                },
+                "required": true
+              },
+              {
+                "name": "participants",
+                "type": "array",
+                "entity": {
+                  "name": "user",
+                  "description": "User",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ],
+                  "additionalattributes": [
+                    {
+                      "name": "email",
+                      "type": "string",
+                      "required": true
+                    }
+                  ]
+                },
+                "required": false
+              },
+              {
+                "name": "guests",
+                "type": "array",
+                "entity": {
+                  "name": "user",
+                  "description": "User",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ],
+                  "additionalattributes": [
+                    {
+                      "name": "email",
+                      "type": "string",
+                      "required": true
+                    }
+                  ]
+                },
+                "required": false
+              },
+              {
+                "name": "viewers",
+                "type": "array",
+                "entity": {
+                  "name": "user",
+                  "description": "User",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ],
+                  "additionalattributes": [
+                    {
+                      "name": "email",
+                      "type": "string",
+                      "required": true
+                    }
+                  ]
+                },
+                "required": false
+              },
+              {
+                "name": "presenters",
+                "type": "array",
+                "entity": {
+                  "name": "user",
+                  "description": "User",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ],
+                  "additionalattributes": [
+                    {
+                      "name": "email",
+                      "type": "string",
+                      "required": true
+                    }
+                  ]
+                },
+                "required": false
+              },
+              {
+                "name": "hosts",
+                "type": "array",
+                "entity": {
+                  "name": "user",
+                  "description": "User",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ],
+                  "additionalattributes": [
+                    {
+                      "name": "email",
+                      "type": "string",
+                      "required": true
+                    }
+                  ]
+                },
+                "required": false
+              },
+              {
+                "name": "status",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "serviceorders",
+                "type": "array",
+                "entity": {
+                  "name": "serviceorder",
+                  "description": "Service Order",
+                  "baselineattributes": [
+                    {
+                      "name": "tenant",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "name",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "type": "string",
+                      "required": false
+                    }
+                  ],
+                  "additionalattributes": [
+                    {
+                      "name": "deliverydate",
+                      "type": "datetime",
+                      "required": false
+                    },
+                    {
+                      "name": "deliverto",
+                      "type": "reference",
+                      "entity": {
+                        "name": "user",
+                        "description": "User",
+                        "baselineattributes": [
+                          {
+                            "name": "tenant",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "name",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "description",
+                            "type": "string",
+                            "required": false
+                          }
+                        ],
+                        "additionalattributes": [
+                          {
+                            "name": "email",
+                            "type": "string",
+                            "required": true
+                          }
+                        ]
+                      },
+                      "required": false
+                    },
+                    {
+                      "name": "services",
+                      "type": "array",
+                      "entity": {
+                        "name": "service",
+                        "description": "Service",
+                        "baselineattributes": [
+                          {
+                            "name": "tenant",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "name",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "description",
+                            "type": "string",
+                            "required": false
+                          }
+                        ],
+                        "parent": {
+                          "name": "servicecategory",
+                          "description": "Service Category",
+                          "baselineattributes": [
+                            {
+                              "name": "tenant",
+                              "type": "string",
+                              "required": true
+                            },
+                            {
+                              "name": "name",
+                              "type": "string",
+                              "required": true
+                            },
+                            {
+                              "name": "description",
+                              "type": "string",
+                              "required": false
+                            }
+                          ]
+                        },
+                        "additionalattributes": [
+                          {
+                            "name": "price",
+                            "type": "number",
+                            "required": true
+                          },
+                          {
+                            "name": "currency",
+                            "type": "string",
+                            "required": true
+                          }
+                        ]
+                      },
+                      "required": false
+                    },
+                    {
+                      "name": "status",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "payment",
+                      "type": "reference",
+                      "entity": {
+                        "name": "account",
+                        "description": "Account",
+                        "baselineattributes": [
+                          {
+                            "name": "tenant",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "name",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "description",
+                            "type": "string",
+                            "required": false
+                          }
+                        ],
+                        "additionalattributes": [
+                          {
+                            "name": "balance",
+                            "type": "number",
+                            "required": true
+                          },
+                          {
+                            "name": "currency",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "status",
+                            "type": "string",
+                            "required": true
+                          }
+                        ]
+                      },
+                      "referenceto": "account",
+                      "required": false
+                    }
+                  ]
+                },
+                "required": false
+              },
+              {
+                "name": "exchangereference",
+                "type": "string",
+                "required": false
+              },
+              {
+                "name": "exchangestatus",
+                "type": "string",
+                "required": false
+              },
+              {
+                "name": "teamsreference",
+                "type": "string",
+                "required": false
+              },
+              {
+                "name": "teamsstatus",
+                "type": "string",
+                "required": false
+              }
+            ]
+          },
+          "state": "cancelled"
+        },
+        {
+          "name": "reschedule",
+          "description": "Reschedule Meeting",
+          "result": "meeting"
+        }
+      ]
+    },
+    {
+      "stage": "prearrival"
+    },
+    {
+      "stage": "arrival"
+    },
+    {
+      "stage": "execution",
+      "substages": [
+        {
+          "name": "start",
+          "description": "Start Meeting",
+          "result": "meeting"
+        },
+        {
+          "name": "end",
+          "description": "End Meeting",
+          "result": "meeting"
+        },
+        {
+          "name": "followup",
+          "description": "Follow Up Meeting",
+          "result": "meeting"
+        }
+      ]
+    },
+    {
+      "stage": "predeparture"
+    },
+    {
+      "stage": "departure"
+    },
+    {
+      "stage": "postmeeting",
+      "substages": [
+        {
+          "name": "feedback",
+          "description": "Feedback Meeting",
+          "result": "meeting"
+        },
+        {
+          "name": "audit",
+          "description": "Audit Meeting",
+          "result": "meeting"
+        },
+        {
+          "name": "archive",
+          "description": "Archive Meeting",
+          "result": "meeting"
+        }
+      ]
+    },
+    {
+      "name": "individualactions",
+      "description": "Individual Actions",
+      "sequence": [
+        {
+          "name": "accept",
+          "description": "Accept Invitation",
+          "result": "meeting"
+        },
+        {
+          "name": "decline",
+          "description": "Decline Invitation",
+          "result": "meeting"
+        },
+        {
+          "name": "propose",
+          "description": "Propose New Time",
+          "result": "meeting"
+        },
+        {
+          "name": "confirm",
+          "description": "Confirm Meeting",
+          "result": "meeting"
+        },
+        {
+          "name": "cancel",
+          "description": "Cancel Meeting",
+          "result": "meeting"
+        },
+        {
+          "name": "reschedule",
+          "description": "Reschedule Meeting",
+          "result": "meeting"
         }
       ]
     }

@@ -31,8 +31,8 @@ type Meeting struct {
     Name string `json:"name"`
     Description string `json:"description"`
     Start time.Time `json:"start"`
-    End time.Time `json:"end"`
-    Location databasetypes.Reference `json:"location"`
+    Duration int `json:"duration"`
+    Location string `json:"location"`
     Organizer databasetypes.Reference `json:"organizer"`
     Participants []databasetypes.Page `json:"participants"`
     Guests []databasetypes.Page `json:"guests"`

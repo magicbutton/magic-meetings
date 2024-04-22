@@ -10,7 +10,7 @@ package meetingroommodel
 import (
 	"encoding/json"
 	"time"
-    "github.com/magicbutton/magic-meetings/database/databasetypes"
+    
 )
 
 func UnmarshalMeetingroom(data []byte) (Meetingroom, error) {
@@ -32,8 +32,7 @@ type Meetingroom struct {
     Description string `json:"description"`
     Email string `json:"email"`
     Capacity int `json:"capacity"`
-    Features []databasetypes.Page `json:"features"`
-    Floor databasetypes.Reference `json:"floor"`
+    Features string `json:"features"`
 
 }
 
