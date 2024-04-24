@@ -5,7 +5,7 @@ set the Front Matter property ´keep´ to ´true´ syntax for the code snippet
 keep: false
 ---
 */
-//generator:  noma1
+//generator:  noma3
 package messagetemplates
             import (
                 "log"

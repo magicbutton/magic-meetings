@@ -5,9 +5,11 @@ set the Front Matter property ´keep´ to ´true´ syntax for the code snippet
 keep: false
 ---
 */   
+// macd.1
 package services
 import (
 	"encoding/json"
+    "fmt"
 	"log"
     "github.com/magicbutton/magic-meetings/services/endpoints/service"
     "github.com/magicbutton/magic-meetings/services/models/servicemodel"
@@ -35,6 +37,7 @@ if len(payload.Args) < 1 {
 switch payload.Args[0] {
 
 
+// macd.2
 case "read":
 if (len(payload.Args) < 2) {
     log.Println("Expected 2 arguments, got %d", len(payload.Args))
@@ -47,12 +50,15 @@ if (len(payload.Args) < 2) {
     result,err := service.ServiceRead(payload.Args[1])
     if (err != nil) {
         log.Println("Error", err)
-        ServiceResponseError(req, "Error calling ServiceRead")
+        ServiceResponseError(req, fmt.Sprintf("Error calling ServiceRead: %s", err))
+
+
         return
     }
 
     ServiceResponse(req, result)
 
+// macd.2
 case "create":
 if (len(payload.Args) < 2) {
     log.Println("Expected 2 arguments, got %d", len(payload.Args))
@@ -63,7 +69,11 @@ if (len(payload.Args) < 2) {
 
                 // transformer v1
             object := servicemodel.Service{}
-            err := json.Unmarshal([]byte(payload.Args[1]), &object)
+            body := ""
+
+            json.Unmarshal([]byte(payload.Args[1]), &body)
+            err := json.Unmarshal([]byte(body), &object)
+    
             if err != nil {
                 log.Println("Error", err)
                 ServiceResponseError(req, "Error unmarshalling service")
@@ -73,12 +83,15 @@ if (len(payload.Args) < 2) {
     result,err := service.ServiceCreate(object)
     if (err != nil) {
         log.Println("Error", err)
-        ServiceResponseError(req, "Error calling ServiceCreate")
+        ServiceResponseError(req, fmt.Sprintf("Error calling ServiceCreate: %s", err))
+
+
         return
     }
 
     ServiceResponse(req, result)
 
+// macd.2
 case "update":
 if (len(payload.Args) < 2) {
     log.Println("Expected 2 arguments, got %d", len(payload.Args))
@@ -89,7 +102,11 @@ if (len(payload.Args) < 2) {
 
                 // transformer v1
             object := servicemodel.Service{}
-            err := json.Unmarshal([]byte(payload.Args[1]), &object)
+            body := ""
+
+            json.Unmarshal([]byte(payload.Args[1]), &body)
+            err := json.Unmarshal([]byte(body), &object)
+    
             if err != nil {
                 log.Println("Error", err)
                 ServiceResponseError(req, "Error unmarshalling service")
@@ -99,12 +116,15 @@ if (len(payload.Args) < 2) {
     result,err := service.ServiceUpdate(object)
     if (err != nil) {
         log.Println("Error", err)
-        ServiceResponseError(req, "Error calling ServiceUpdate")
+        ServiceResponseError(req, fmt.Sprintf("Error calling ServiceUpdate: %s", err))
+
+
         return
     }
 
     ServiceResponse(req, result)
 
+// macd.2
 case "delete":
 if (len(payload.Args) < 2) {
     log.Println("Expected 2 arguments, got %d", len(payload.Args))
@@ -116,11 +136,14 @@ if (len(payload.Args) < 2) {
             err :=  service.ServiceDelete(payload.Args[1])
             if (err != nil) {
                 log.Println("Error", err)
-                ServiceResponseError(req, "Error calling ServiceDelete")
+                ServiceResponseError(req, fmt.Sprintf("Error calling ServiceDelete: %s", err))
+
+
                 return
             }
             ServiceResponse(req, "")
 
+// macd.2
 case "search":
 if (len(payload.Args) < 2) {
     log.Println("Expected 2 arguments, got %d", len(payload.Args))
@@ -133,7 +156,9 @@ if (len(payload.Args) < 2) {
     result,err := service.ServiceSearch(payload.Args[1])
     if (err != nil) {
         log.Println("Error", err)
-        ServiceResponseError(req, "Error calling ServiceSearch")
+        ServiceResponseError(req, fmt.Sprintf("Error calling ServiceSearch: %s", err))
+
+
         return
     }
 

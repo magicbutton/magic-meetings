@@ -15,13 +15,13 @@ CREATE TABLE public.productionorder
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at timestamp with time zone
-    ,tenant character varying COLLATE pg_catalog."default" NOT NULL
-    ,name character varying COLLATE pg_catalog."default" NOT NULL
-    ,description character varying COLLATE pg_catalog."default" NOT NULL
-    ,deliverydate character varying COLLATE pg_catalog."default" NOT NULL
-    ,deliverto_id int  NOT NULL
-    ,status character varying COLLATE pg_catalog."default" NOT NULL
-    ,payment_id int  NOT NULL
+    ,tenant character varying COLLATE pg_catalog."default"  NOT NULL
+    ,name character varying COLLATE pg_catalog."default"  NOT NULL
+    ,description character varying COLLATE pg_catalog."default" 
+    ,deliverydate character varying COLLATE pg_catalog."default"  
+    ,deliverto_id int  
+    ,status character varying COLLATE pg_catalog."default"  NOT NULL
+    ,payment_id int  
 
 
 );
@@ -31,27 +31,27 @@ CREATE TABLE public.productionorder
                 REFERENCES public.user (id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION
-                NOT VALID;                CREATE TABLE public.productionorder_services_service (
+                NOT VALID;                CREATE TABLE public.productionorder_m2m_service (
                 id SERIAL PRIMARY KEY,
                 created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 deleted_at timestamp with time zone
-                    ,productionorder_id int  NOT NULL
-
-                    ,service_id int  NOT NULL
-
+                    ,productionorder_id int  
+ 
+                    ,service_id int  
+ 
 
                 );
             
 
-                ALTER TABLE public.productionorder_services_service
+                ALTER TABLE public.productionorder_m2m_service
                 ADD FOREIGN KEY (productionorder_id)
                 REFERENCES public.productionorder (id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION
                 NOT VALID;
 
-                ALTER TABLE public.productionorder_services_service
+                ALTER TABLE public.productionorder_m2m_service
                 ADD FOREIGN KEY (service_id)
                 REFERENCES public.service (id) MATCH SIMPLE
                 ON UPDATE NO ACTION
@@ -65,6 +65,6 @@ CREATE TABLE public.productionorder
 
 
 ---- create above / drop below ----
-DROP TABLE IF EXISTS public.productionorder_services_service;
+DROP TABLE IF EXISTS public.productionorder_m2m_service;
 DROP TABLE public.productionorder;
 

@@ -15,15 +15,21 @@ CREATE TABLE public.building
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at timestamp with time zone
-    ,tenant character varying COLLATE pg_catalog."default" NOT NULL
-    ,name character varying COLLATE pg_catalog."default" NOT NULL
-    ,description character varying COLLATE pg_catalog."default" NOT NULL
-    ,address character varying COLLATE pg_catalog."default" NOT NULL
+    ,site_id int  
+    ,tenant character varying COLLATE pg_catalog."default"  NOT NULL
+    ,name character varying COLLATE pg_catalog."default"  NOT NULL
+    ,description character varying COLLATE pg_catalog."default" 
+    ,address character varying COLLATE pg_catalog."default"  NOT NULL
 
 
 );
 
-
+        ALTER TABLE IF EXISTS public.building
+        ADD FOREIGN KEY (site_id)
+        REFERENCES public.site (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID;
 
 
 ---- create above / drop below ----

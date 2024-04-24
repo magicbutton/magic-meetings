@@ -24,7 +24,7 @@ func (r *Meeting) Marshal() ([]byte, error) {
 }
 
 type Meeting struct {
-    ID        string    `json:"id"`
+    ID        int    `json:"id"`
     CreatedAt time.Time `json:"created_at"`
     UpdatedAt time.Time `json:"updated_at"`
         Tenant string `json:"tenant"`
@@ -34,13 +34,7 @@ type Meeting struct {
     Duration int `json:"duration"`
     Location string `json:"location"`
     Organizer databasetypes.Reference `json:"organizer"`
-    Participants []databasetypes.Page `json:"participants"`
-    Guests []databasetypes.Page `json:"guests"`
-    Viewers []databasetypes.Page `json:"viewers"`
-    Presenters []databasetypes.Page `json:"presenters"`
-    Hosts []databasetypes.Page `json:"hosts"`
     Status string `json:"status"`
-    Serviceorders []databasetypes.Page `json:"serviceorders"`
     Exchangereference string `json:"exchangereference"`
     Exchangestatus string `json:"exchangestatus"`
     Teamsreference string `json:"teamsreference"`

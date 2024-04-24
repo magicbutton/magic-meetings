@@ -5,9 +5,11 @@ set the Front Matter property ´keep´ to ´true´ syntax for the code snippet
 keep: false
 ---
 */   
+// macd.1
 package services
 import (
 	"encoding/json"
+    "fmt"
 	"log"
     "github.com/magicbutton/magic-meetings/services/endpoints/auditlog"
     "github.com/magicbutton/magic-meetings/services/models/auditlogmodel"
@@ -35,6 +37,7 @@ if len(payload.Args) < 1 {
 switch payload.Args[0] {
 
 
+// macd.2
 case "read":
 if (len(payload.Args) < 2) {
     log.Println("Expected 2 arguments, got %d", len(payload.Args))
@@ -47,12 +50,15 @@ if (len(payload.Args) < 2) {
     result,err := auditlog.AuditlogRead(payload.Args[1])
     if (err != nil) {
         log.Println("Error", err)
-        ServiceResponseError(req, "Error calling AuditlogRead")
+        ServiceResponseError(req, fmt.Sprintf("Error calling AuditlogRead: %s", err))
+
+
         return
     }
 
     ServiceResponse(req, result)
 
+// macd.2
 case "create":
 if (len(payload.Args) < 2) {
     log.Println("Expected 2 arguments, got %d", len(payload.Args))
@@ -63,7 +69,11 @@ if (len(payload.Args) < 2) {
 
                 // transformer v1
             object := auditlogmodel.Auditlog{}
-            err := json.Unmarshal([]byte(payload.Args[1]), &object)
+            body := ""
+
+            json.Unmarshal([]byte(payload.Args[1]), &body)
+            err := json.Unmarshal([]byte(body), &object)
+    
             if err != nil {
                 log.Println("Error", err)
                 ServiceResponseError(req, "Error unmarshalling auditlog")
@@ -73,12 +83,15 @@ if (len(payload.Args) < 2) {
     result,err := auditlog.AuditlogCreate(object)
     if (err != nil) {
         log.Println("Error", err)
-        ServiceResponseError(req, "Error calling AuditlogCreate")
+        ServiceResponseError(req, fmt.Sprintf("Error calling AuditlogCreate: %s", err))
+
+
         return
     }
 
     ServiceResponse(req, result)
 
+// macd.2
 case "update":
 if (len(payload.Args) < 2) {
     log.Println("Expected 2 arguments, got %d", len(payload.Args))
@@ -89,7 +102,11 @@ if (len(payload.Args) < 2) {
 
                 // transformer v1
             object := auditlogmodel.Auditlog{}
-            err := json.Unmarshal([]byte(payload.Args[1]), &object)
+            body := ""
+
+            json.Unmarshal([]byte(payload.Args[1]), &body)
+            err := json.Unmarshal([]byte(body), &object)
+    
             if err != nil {
                 log.Println("Error", err)
                 ServiceResponseError(req, "Error unmarshalling auditlog")
@@ -99,12 +116,15 @@ if (len(payload.Args) < 2) {
     result,err := auditlog.AuditlogUpdate(object)
     if (err != nil) {
         log.Println("Error", err)
-        ServiceResponseError(req, "Error calling AuditlogUpdate")
+        ServiceResponseError(req, fmt.Sprintf("Error calling AuditlogUpdate: %s", err))
+
+
         return
     }
 
     ServiceResponse(req, result)
 
+// macd.2
 case "delete":
 if (len(payload.Args) < 2) {
     log.Println("Expected 2 arguments, got %d", len(payload.Args))
@@ -116,11 +136,14 @@ if (len(payload.Args) < 2) {
             err :=  auditlog.AuditlogDelete(payload.Args[1])
             if (err != nil) {
                 log.Println("Error", err)
-                ServiceResponseError(req, "Error calling AuditlogDelete")
+                ServiceResponseError(req, fmt.Sprintf("Error calling AuditlogDelete: %s", err))
+
+
                 return
             }
             ServiceResponse(req, "")
 
+// macd.2
 case "search":
 if (len(payload.Args) < 2) {
     log.Println("Expected 2 arguments, got %d", len(payload.Args))
@@ -133,7 +156,9 @@ if (len(payload.Args) < 2) {
     result,err := auditlog.AuditlogSearch(payload.Args[1])
     if (err != nil) {
         log.Println("Error", err)
-        ServiceResponseError(req, "Error calling AuditlogSearch")
+        ServiceResponseError(req, fmt.Sprintf("Error calling AuditlogSearch: %s", err))
+
+
         return
     }
 

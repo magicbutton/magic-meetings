@@ -45,6 +45,35 @@ export default function TestServiceComponent() {
    
     <div>
    
+  
+    <div className="flex">
+   
+        </div>
+        <div>
+        <div className="text-xl my-4 spy-l-2">Test</div>
+        <textarea
+        style={{ height: "50vh" }}
+        className="w-full border border-gray-300 rounded-lg p-2 h-1/3"
+        
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        />
+        <div className="p-3">
+        <Button onClick={invokeServiceEndpoint}>Invoke</Button>
+        <div>
+        </div>
+      
+        </div>
+        </div>
+        <pre>
+            {JSON.stringify(
+            { errorMessage, input,output, transactionId },
+            null,
+            2
+            )}
+        </pre>  </div>
+     
+    </div>
     <ShowCodeFragment
     title="Import statement" code={`     
 import { communicationchannelDelete } from "@/services/magic-meetings/endpoints/communicationchannel/delete";
@@ -69,33 +98,6 @@ if (result.data) {
 }
 };` } 
     />
-    <div className="flex">
-   
-        </div>
-        <div>
-        <div className="text-xl my-4 spy-l-2">Test</div>
-        <textarea
-        className="w-full border border-gray-300 rounded-lg p-2"
-        
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        />
-        <div className="p-3">
-        <Button onClick={invokeServiceEndpoint}>Invoke</Button>
-        <div>
-        </div>
-      
-        </div>
-        </div>
-        <pre>
-            {JSON.stringify(
-            { errorMessage, input,output, transactionId },
-            null,
-            2
-            )}
-        </pre>  </div>
-     
-    </div>
     </div>
 
     

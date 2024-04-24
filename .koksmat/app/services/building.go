@@ -5,9 +5,11 @@ set the Front Matter property ´keep´ to ´true´ syntax for the code snippet
 keep: false
 ---
 */   
+// macd.1
 package services
 import (
 	"encoding/json"
+    "fmt"
 	"log"
     "github.com/magicbutton/magic-meetings/services/endpoints/building"
     "github.com/magicbutton/magic-meetings/services/models/buildingmodel"
@@ -35,6 +37,7 @@ if len(payload.Args) < 1 {
 switch payload.Args[0] {
 
 
+// macd.2
 case "read":
 if (len(payload.Args) < 2) {
     log.Println("Expected 2 arguments, got %d", len(payload.Args))
@@ -47,12 +50,15 @@ if (len(payload.Args) < 2) {
     result,err := building.BuildingRead(payload.Args[1])
     if (err != nil) {
         log.Println("Error", err)
-        ServiceResponseError(req, "Error calling BuildingRead")
+        ServiceResponseError(req, fmt.Sprintf("Error calling BuildingRead: %s", err))
+
+
         return
     }
 
     ServiceResponse(req, result)
 
+// macd.2
 case "create":
 if (len(payload.Args) < 2) {
     log.Println("Expected 2 arguments, got %d", len(payload.Args))
@@ -63,7 +69,11 @@ if (len(payload.Args) < 2) {
 
                 // transformer v1
             object := buildingmodel.Building{}
-            err := json.Unmarshal([]byte(payload.Args[1]), &object)
+            body := ""
+
+            json.Unmarshal([]byte(payload.Args[1]), &body)
+            err := json.Unmarshal([]byte(body), &object)
+    
             if err != nil {
                 log.Println("Error", err)
                 ServiceResponseError(req, "Error unmarshalling building")
@@ -73,12 +83,15 @@ if (len(payload.Args) < 2) {
     result,err := building.BuildingCreate(object)
     if (err != nil) {
         log.Println("Error", err)
-        ServiceResponseError(req, "Error calling BuildingCreate")
+        ServiceResponseError(req, fmt.Sprintf("Error calling BuildingCreate: %s", err))
+
+
         return
     }
 
     ServiceResponse(req, result)
 
+// macd.2
 case "update":
 if (len(payload.Args) < 2) {
     log.Println("Expected 2 arguments, got %d", len(payload.Args))
@@ -89,7 +102,11 @@ if (len(payload.Args) < 2) {
 
                 // transformer v1
             object := buildingmodel.Building{}
-            err := json.Unmarshal([]byte(payload.Args[1]), &object)
+            body := ""
+
+            json.Unmarshal([]byte(payload.Args[1]), &body)
+            err := json.Unmarshal([]byte(body), &object)
+    
             if err != nil {
                 log.Println("Error", err)
                 ServiceResponseError(req, "Error unmarshalling building")
@@ -99,12 +116,15 @@ if (len(payload.Args) < 2) {
     result,err := building.BuildingUpdate(object)
     if (err != nil) {
         log.Println("Error", err)
-        ServiceResponseError(req, "Error calling BuildingUpdate")
+        ServiceResponseError(req, fmt.Sprintf("Error calling BuildingUpdate: %s", err))
+
+
         return
     }
 
     ServiceResponse(req, result)
 
+// macd.2
 case "delete":
 if (len(payload.Args) < 2) {
     log.Println("Expected 2 arguments, got %d", len(payload.Args))
@@ -116,11 +136,14 @@ if (len(payload.Args) < 2) {
             err :=  building.BuildingDelete(payload.Args[1])
             if (err != nil) {
                 log.Println("Error", err)
-                ServiceResponseError(req, "Error calling BuildingDelete")
+                ServiceResponseError(req, fmt.Sprintf("Error calling BuildingDelete: %s", err))
+
+
                 return
             }
             ServiceResponse(req, "")
 
+// macd.2
 case "search":
 if (len(payload.Args) < 2) {
     log.Println("Expected 2 arguments, got %d", len(payload.Args))
@@ -133,7 +156,9 @@ if (len(payload.Args) < 2) {
     result,err := building.BuildingSearch(payload.Args[1])
     if (err != nil) {
         log.Println("Error", err)
-        ServiceResponseError(req, "Error calling BuildingSearch")
+        ServiceResponseError(req, fmt.Sprintf("Error calling BuildingSearch: %s", err))
+
+
         return
     }
 

@@ -15,18 +15,18 @@ CREATE TABLE public.meeting
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at timestamp with time zone
-    ,tenant character varying COLLATE pg_catalog."default" NOT NULL
-    ,name character varying COLLATE pg_catalog."default" NOT NULL
-    ,description character varying COLLATE pg_catalog."default" NOT NULL
-    ,start character varying COLLATE pg_catalog."default" NOT NULL
-    ,duration character varying COLLATE pg_catalog."default" NOT NULL
-    ,location character varying COLLATE pg_catalog."default" NOT NULL
-    ,organizer_id int  NOT NULL
-    ,status character varying COLLATE pg_catalog."default" NOT NULL
-    ,exchangereference character varying COLLATE pg_catalog."default" NOT NULL
-    ,exchangestatus character varying COLLATE pg_catalog."default" NOT NULL
-    ,teamsreference character varying COLLATE pg_catalog."default" NOT NULL
-    ,teamsstatus character varying COLLATE pg_catalog."default" NOT NULL
+    ,tenant character varying COLLATE pg_catalog."default"  NOT NULL
+    ,name character varying COLLATE pg_catalog."default"  NOT NULL
+    ,description character varying COLLATE pg_catalog."default" 
+    ,start character varying COLLATE pg_catalog."default"   NOT NULL
+    ,duration character varying COLLATE pg_catalog."default"   NOT NULL
+    ,location character varying COLLATE pg_catalog."default"  NOT NULL
+    ,organizer_id int   NOT NULL
+    ,status character varying COLLATE pg_catalog."default"  NOT NULL
+    ,exchangereference character varying COLLATE pg_catalog."default" 
+    ,exchangestatus character varying COLLATE pg_catalog."default" 
+    ,teamsreference character varying COLLATE pg_catalog."default" 
+    ,teamsstatus character varying COLLATE pg_catalog."default" 
 
 
 );
@@ -36,152 +36,152 @@ CREATE TABLE public.meeting
                 REFERENCES public.user (id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION
-                NOT VALID;                CREATE TABLE public.meeting_participants_user (
+                NOT VALID;                CREATE TABLE public.meeting_m2m_user (
                 id SERIAL PRIMARY KEY,
                 created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 deleted_at timestamp with time zone
-                    ,meeting_id int  NOT NULL
-
-                    ,user_id int  NOT NULL
-
+                    ,meeting_id int  
+ 
+                    ,user_id int  
+ 
 
                 );
             
 
-                ALTER TABLE public.meeting_participants_user
+                ALTER TABLE public.meeting_m2m_user
                 ADD FOREIGN KEY (meeting_id)
                 REFERENCES public.meeting (id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION
                 NOT VALID;
 
-                ALTER TABLE public.meeting_participants_user
+                ALTER TABLE public.meeting_m2m_user
                 ADD FOREIGN KEY (user_id)
                 REFERENCES public.user (id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION
-                NOT VALID;                CREATE TABLE public.meeting_guests_user (
+                NOT VALID;                CREATE TABLE public.meeting_m2m_user (
                 id SERIAL PRIMARY KEY,
                 created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 deleted_at timestamp with time zone
-                    ,meeting_id int  NOT NULL
-
-                    ,user_id int  NOT NULL
-
+                    ,meeting_id int  
+ 
+                    ,user_id int  
+ 
 
                 );
             
 
-                ALTER TABLE public.meeting_guests_user
+                ALTER TABLE public.meeting_m2m_user
                 ADD FOREIGN KEY (meeting_id)
                 REFERENCES public.meeting (id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION
                 NOT VALID;
 
-                ALTER TABLE public.meeting_guests_user
+                ALTER TABLE public.meeting_m2m_user
                 ADD FOREIGN KEY (user_id)
                 REFERENCES public.user (id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION
-                NOT VALID;                CREATE TABLE public.meeting_viewers_user (
+                NOT VALID;                CREATE TABLE public.meeting_m2m_user (
                 id SERIAL PRIMARY KEY,
                 created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 deleted_at timestamp with time zone
-                    ,meeting_id int  NOT NULL
-
-                    ,user_id int  NOT NULL
-
+                    ,meeting_id int  
+ 
+                    ,user_id int  
+ 
 
                 );
             
 
-                ALTER TABLE public.meeting_viewers_user
+                ALTER TABLE public.meeting_m2m_user
                 ADD FOREIGN KEY (meeting_id)
                 REFERENCES public.meeting (id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION
                 NOT VALID;
 
-                ALTER TABLE public.meeting_viewers_user
+                ALTER TABLE public.meeting_m2m_user
                 ADD FOREIGN KEY (user_id)
                 REFERENCES public.user (id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION
-                NOT VALID;                CREATE TABLE public.meeting_presenters_user (
+                NOT VALID;                CREATE TABLE public.meeting_m2m_user (
                 id SERIAL PRIMARY KEY,
                 created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 deleted_at timestamp with time zone
-                    ,meeting_id int  NOT NULL
-
-                    ,user_id int  NOT NULL
-
+                    ,meeting_id int  
+ 
+                    ,user_id int  
+ 
 
                 );
             
 
-                ALTER TABLE public.meeting_presenters_user
+                ALTER TABLE public.meeting_m2m_user
                 ADD FOREIGN KEY (meeting_id)
                 REFERENCES public.meeting (id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION
                 NOT VALID;
 
-                ALTER TABLE public.meeting_presenters_user
+                ALTER TABLE public.meeting_m2m_user
                 ADD FOREIGN KEY (user_id)
                 REFERENCES public.user (id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION
-                NOT VALID;                CREATE TABLE public.meeting_hosts_user (
+                NOT VALID;                CREATE TABLE public.meeting_m2m_user (
                 id SERIAL PRIMARY KEY,
                 created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 deleted_at timestamp with time zone
-                    ,meeting_id int  NOT NULL
-
-                    ,user_id int  NOT NULL
-
+                    ,meeting_id int  
+ 
+                    ,user_id int  
+ 
 
                 );
             
 
-                ALTER TABLE public.meeting_hosts_user
+                ALTER TABLE public.meeting_m2m_user
                 ADD FOREIGN KEY (meeting_id)
                 REFERENCES public.meeting (id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION
                 NOT VALID;
 
-                ALTER TABLE public.meeting_hosts_user
+                ALTER TABLE public.meeting_m2m_user
                 ADD FOREIGN KEY (user_id)
                 REFERENCES public.user (id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION
-                NOT VALID;                CREATE TABLE public.meeting_serviceorders_serviceorder (
+                NOT VALID;                CREATE TABLE public.meeting_m2m_serviceorder (
                 id SERIAL PRIMARY KEY,
                 created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 deleted_at timestamp with time zone
-                    ,meeting_id int  NOT NULL
-
-                    ,serviceorder_id int  NOT NULL
-
+                    ,meeting_id int  
+ 
+                    ,serviceorder_id int  
+ 
 
                 );
             
 
-                ALTER TABLE public.meeting_serviceorders_serviceorder
+                ALTER TABLE public.meeting_m2m_serviceorder
                 ADD FOREIGN KEY (meeting_id)
                 REFERENCES public.meeting (id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION
                 NOT VALID;
 
-                ALTER TABLE public.meeting_serviceorders_serviceorder
+                ALTER TABLE public.meeting_m2m_serviceorder
                 ADD FOREIGN KEY (serviceorder_id)
                 REFERENCES public.serviceorder (id) MATCH SIMPLE
                 ON UPDATE NO ACTION
@@ -190,6 +190,6 @@ CREATE TABLE public.meeting
 
 
 ---- create above / drop below ----
-DROP TABLE IF EXISTS public.meeting_participants_user;DROP TABLE IF EXISTS public.meeting_guests_user;DROP TABLE IF EXISTS public.meeting_viewers_user;DROP TABLE IF EXISTS public.meeting_presenters_user;DROP TABLE IF EXISTS public.meeting_hosts_user;DROP TABLE IF EXISTS public.meeting_serviceorders_serviceorder;
+DROP TABLE IF EXISTS public.meeting_m2m_user;DROP TABLE IF EXISTS public.meeting_m2m_user;DROP TABLE IF EXISTS public.meeting_m2m_user;DROP TABLE IF EXISTS public.meeting_m2m_user;DROP TABLE IF EXISTS public.meeting_m2m_user;DROP TABLE IF EXISTS public.meeting_m2m_serviceorder;
 DROP TABLE public.meeting;
 

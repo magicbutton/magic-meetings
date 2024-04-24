@@ -656,7 +656,7 @@
         },
         {
           "name": "capacity",
-          "type": "integer",
+          "type": "int",
           "required": true
         },
         {
@@ -1902,7 +1902,7 @@
         },
         {
           "name": "duration",
-          "type": "integer",
+          "type": "int",
           "description": "Duration in minutes",
           "required": true
         },
@@ -2640,7 +2640,7 @@
             },
             {
               "name": "duration",
-              "type": "integer",
+              "type": "int",
               "description": "Duration in minutes",
               "required": true
             },
@@ -5241,7 +5241,7 @@
             },
             {
               "name": "capacity",
-              "type": "integer",
+              "type": "int",
               "required": true
             },
             {
@@ -6710,7 +6710,7 @@
               },
               {
                 "name": "duration",
-                "type": "integer",
+                "type": "int",
                 "description": "Duration in minutes",
                 "required": true
               },
@@ -7153,7 +7153,7 @@
               },
               {
                 "name": "duration",
-                "type": "integer",
+                "type": "int",
                 "description": "Duration in minutes",
                 "required": true
               },
@@ -7621,42 +7621,80 @@
           "result": "meeting"
         }
       ]
+    }
+  ],
+  "events": [
+    {
+      "name": "meetinginvitation",
+      "description": "Meeting Invitation",
+      "trigger": "meetinginvitation",
+      "result": "meeting"
     },
     {
-      "name": "individualactions",
-      "description": "Individual Actions",
-      "sequence": [
-        {
-          "name": "accept",
-          "description": "Accept Invitation",
-          "result": "meeting"
-        },
-        {
-          "name": "decline",
-          "description": "Decline Invitation",
-          "result": "meeting"
-        },
-        {
-          "name": "propose",
-          "description": "Propose New Time",
-          "result": "meeting"
-        },
-        {
-          "name": "confirm",
-          "description": "Confirm Meeting",
-          "result": "meeting"
-        },
-        {
-          "name": "cancel",
-          "description": "Cancel Meeting",
-          "result": "meeting"
-        },
-        {
-          "name": "reschedule",
-          "description": "Reschedule Meeting",
-          "result": "meeting"
-        }
-      ]
+      "name": "meetingcancellationrequest",
+      "description": "Meeting Cancellation Request",
+      "trigger": "meetingcancellationrequest",
+      "result": "meeting"
+    },
+    {
+      "name": "meetingreschedule",
+      "description": "Meeting Reschedule",
+      "trigger": "meetingreschedule",
+      "result": "meeting"
+    },
+    {
+      "name": "meetingconfirmation",
+      "description": "Meeting Confirmation",
+      "trigger": "meetingconfirmation",
+      "result": "meeting"
+    },
+    {
+      "name": "meetingdecline",
+      "description": "Meeting Decline",
+      "trigger": "meetingdecline",
+      "result": "meeting"
+    },
+    {
+      "name": "meetingaccept",
+      "description": "Meeting Accept",
+      "trigger": "meetingaccept",
+      "result": "meeting"
+    },
+    {
+      "name": "meetingstart",
+      "description": "Meeting Start",
+      "trigger": "meetingstart",
+      "result": "meeting"
+    },
+    {
+      "name": "meetingend",
+      "description": "Meeting End",
+      "trigger": "meetingend",
+      "result": "meeting"
+    },
+    {
+      "name": "meetingfollowup",
+      "description": "Meeting Follow Up",
+      "trigger": "meetingfollowup",
+      "result": "meeting"
+    },
+    {
+      "name": "meetingfeedback",
+      "description": "Meeting Feedback",
+      "trigger": "meetingfeedback",
+      "result": "meeting"
+    },
+    {
+      "name": "meetingaudit",
+      "description": "Meeting Audit",
+      "trigger": "meetingaudit",
+      "result": "meeting"
+    },
+    {
+      "name": "meetingarchive",
+      "description": "Meeting Archive",
+      "trigger": "meetingarchive",
+      "result": "meeting"
     }
   ]
 }

@@ -15,8 +15,8 @@ CREATE TABLE public.tenant
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at timestamp with time zone
-    ,name character varying COLLATE pg_catalog."default" NOT NULL
-    ,description character varying COLLATE pg_catalog."default" NOT NULL
+    ,name character varying COLLATE pg_catalog."default"  NOT NULL
+    ,description character varying COLLATE pg_catalog."default" 
 
 
 );

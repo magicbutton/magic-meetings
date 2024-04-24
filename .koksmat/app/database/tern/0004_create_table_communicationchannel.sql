@@ -15,11 +15,11 @@ CREATE TABLE public.communicationchannel
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at timestamp with time zone
-    ,tenant character varying COLLATE pg_catalog."default" NOT NULL
-    ,name character varying COLLATE pg_catalog."default" NOT NULL
-    ,description character varying COLLATE pg_catalog."default" NOT NULL
-    ,type character varying COLLATE pg_catalog."default" NOT NULL
-    ,address character varying COLLATE pg_catalog."default" NOT NULL
+    ,tenant character varying COLLATE pg_catalog."default"  NOT NULL
+    ,name character varying COLLATE pg_catalog."default"  NOT NULL
+    ,description character varying COLLATE pg_catalog."default" 
+    ,type character varying COLLATE pg_catalog."default"  NOT NULL
+    ,address character varying COLLATE pg_catalog."default"  NOT NULL
 
 
 );

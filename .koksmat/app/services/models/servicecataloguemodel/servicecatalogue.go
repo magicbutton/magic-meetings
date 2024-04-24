@@ -10,7 +10,7 @@ package servicecataloguemodel
 import (
 	"encoding/json"
 	"time"
-    "github.com/magicbutton/magic-meetings/database/databasetypes"
+    
 )
 
 func UnmarshalServicecatalogue(data []byte) (Servicecatalogue, error) {
@@ -24,13 +24,12 @@ func (r *Servicecatalogue) Marshal() ([]byte, error) {
 }
 
 type Servicecatalogue struct {
-    ID        string    `json:"id"`
+    ID        int    `json:"id"`
     CreatedAt time.Time `json:"created_at"`
     UpdatedAt time.Time `json:"updated_at"`
         Tenant string `json:"tenant"`
     Name string `json:"name"`
     Description string `json:"description"`
-    Services []databasetypes.Page `json:"services"`
 
 }
 

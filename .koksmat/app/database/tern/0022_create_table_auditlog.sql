@@ -15,14 +15,14 @@ CREATE TABLE public.auditlog
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at timestamp with time zone
-    ,tenant character varying COLLATE pg_catalog."default" NOT NULL
-    ,name character varying COLLATE pg_catalog."default" NOT NULL
-    ,description character varying COLLATE pg_catalog."default" NOT NULL
-    ,action character varying COLLATE pg_catalog."default" NOT NULL
-    ,user_id int  NOT NULL
-    ,entity character varying COLLATE pg_catalog."default" NOT NULL
-    ,entityid character varying COLLATE pg_catalog."default" NOT NULL
-    ,timestamp character varying COLLATE pg_catalog."default" NOT NULL
+    ,tenant character varying COLLATE pg_catalog."default"  NOT NULL
+    ,name character varying COLLATE pg_catalog."default"  NOT NULL
+    ,description character varying COLLATE pg_catalog."default" 
+    ,action character varying COLLATE pg_catalog."default"  NOT NULL
+    ,user_id int   NOT NULL
+    ,entity character varying COLLATE pg_catalog."default"  NOT NULL
+    ,entityid character varying COLLATE pg_catalog."default"  NOT NULL
+    ,timestamp character varying COLLATE pg_catalog."default"   NOT NULL
 
 
 );

@@ -15,17 +15,23 @@ CREATE TABLE public.task
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at timestamp with time zone
-    ,tenant character varying COLLATE pg_catalog."default" NOT NULL
-    ,name character varying COLLATE pg_catalog."default" NOT NULL
-    ,description character varying COLLATE pg_catalog."default" NOT NULL
-    ,starttime character varying COLLATE pg_catalog."default" NOT NULL
-    ,location character varying COLLATE pg_catalog."default" NOT NULL
-    ,responsible_id int  NOT NULL
+    ,_id int  
+    ,tenant character varying COLLATE pg_catalog."default"  NOT NULL
+    ,name character varying COLLATE pg_catalog."default"  NOT NULL
+    ,description character varying COLLATE pg_catalog."default" 
+    ,starttime character varying COLLATE pg_catalog."default"   NOT NULL
+    ,location character varying COLLATE pg_catalog."default"  NOT NULL
+    ,responsible_id int   NOT NULL
 
 
 );
 
-                ALTER TABLE IF EXISTS public.task
+        ALTER TABLE IF EXISTS public.task
+        ADD FOREIGN KEY (_id)
+        REFERENCES public. (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID;                ALTER TABLE IF EXISTS public.task
                 ADD FOREIGN KEY (responsible_id)
                 REFERENCES public.user (id) MATCH SIMPLE
                 ON UPDATE NO ACTION

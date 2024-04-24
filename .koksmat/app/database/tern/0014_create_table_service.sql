@@ -15,16 +15,22 @@ CREATE TABLE public.service
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at timestamp with time zone
-    ,tenant character varying COLLATE pg_catalog."default" NOT NULL
-    ,name character varying COLLATE pg_catalog."default" NOT NULL
-    ,description character varying COLLATE pg_catalog."default" NOT NULL
-    ,price character varying COLLATE pg_catalog."default" NOT NULL
-    ,currency character varying COLLATE pg_catalog."default" NOT NULL
+    ,servicecategory_id int  
+    ,tenant character varying COLLATE pg_catalog."default"  NOT NULL
+    ,name character varying COLLATE pg_catalog."default"  NOT NULL
+    ,description character varying COLLATE pg_catalog."default" 
+    ,price character varying COLLATE pg_catalog."default"   NOT NULL
+    ,currency character varying COLLATE pg_catalog."default"  NOT NULL
 
 
 );
 
-
+        ALTER TABLE IF EXISTS public.service
+        ADD FOREIGN KEY (servicecategory_id)
+        REFERENCES public.servicecategory (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID;
 
 
 ---- create above / drop below ----

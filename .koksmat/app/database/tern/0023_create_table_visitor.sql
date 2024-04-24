@@ -15,15 +15,15 @@ CREATE TABLE public.visitor
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at timestamp with time zone
-    ,tenant character varying COLLATE pg_catalog."default" NOT NULL
-    ,name character varying COLLATE pg_catalog."default" NOT NULL
-    ,description character varying COLLATE pg_catalog."default" NOT NULL
-    ,email character varying COLLATE pg_catalog."default" NOT NULL
-    ,phone character varying COLLATE pg_catalog."default" NOT NULL
-    ,company character varying COLLATE pg_catalog."default" NOT NULL
-    ,purpose character varying COLLATE pg_catalog."default" NOT NULL
-    ,host_id int  NOT NULL
-    ,status character varying COLLATE pg_catalog."default" NOT NULL
+    ,tenant character varying COLLATE pg_catalog."default"  NOT NULL
+    ,name character varying COLLATE pg_catalog."default"  NOT NULL
+    ,description character varying COLLATE pg_catalog."default" 
+    ,email character varying COLLATE pg_catalog."default"  NOT NULL
+    ,phone character varying COLLATE pg_catalog."default"  NOT NULL
+    ,company character varying COLLATE pg_catalog."default"  NOT NULL
+    ,purpose character varying COLLATE pg_catalog."default"  NOT NULL
+    ,host_id int   NOT NULL
+    ,status character varying COLLATE pg_catalog."default"  NOT NULL
 
 
 );

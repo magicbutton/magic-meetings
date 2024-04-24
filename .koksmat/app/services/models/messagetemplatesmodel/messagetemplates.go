@@ -24,7 +24,7 @@ func (r *Messagetemplates) Marshal() ([]byte, error) {
 }
 
 type Messagetemplates struct {
-    ID        string    `json:"id"`
+    ID        int    `json:"id"`
     CreatedAt time.Time `json:"created_at"`
     UpdatedAt time.Time `json:"updated_at"`
         Tenant string `json:"tenant"`

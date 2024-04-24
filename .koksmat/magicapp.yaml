@@ -147,7 +147,7 @@ entities:
         required: true
 
       - name: capacity
-        type: integer
+        type: int
         required: true
 
       - name: features
@@ -270,7 +270,7 @@ entities:
         type: datetime
         required: false
       - name: deliverto
-        type: reference$
+        type: reference
         entity: *user
         required: false
       - name: services
@@ -398,7 +398,7 @@ entities:
         type: datetime
         required: true
       - name: duration
-        type: integer
+        type: int
         description: Duration in minutes
         required: true
       - name: location

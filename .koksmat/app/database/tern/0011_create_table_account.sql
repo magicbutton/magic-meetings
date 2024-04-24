@@ -15,12 +15,12 @@ CREATE TABLE public.account
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at timestamp with time zone
-    ,tenant character varying COLLATE pg_catalog."default" NOT NULL
-    ,name character varying COLLATE pg_catalog."default" NOT NULL
-    ,description character varying COLLATE pg_catalog."default" NOT NULL
-    ,balance character varying COLLATE pg_catalog."default" NOT NULL
-    ,currency character varying COLLATE pg_catalog."default" NOT NULL
-    ,status character varying COLLATE pg_catalog."default" NOT NULL
+    ,tenant character varying COLLATE pg_catalog."default"  NOT NULL
+    ,name character varying COLLATE pg_catalog."default"  NOT NULL
+    ,description character varying COLLATE pg_catalog."default" 
+    ,balance character varying COLLATE pg_catalog."default"   NOT NULL
+    ,currency character varying COLLATE pg_catalog."default"  NOT NULL
+    ,status character varying COLLATE pg_catalog."default"  NOT NULL
 
 
 );
